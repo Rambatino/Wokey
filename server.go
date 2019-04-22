@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"wokey/routes/api"
 	"wokey/routes/callback"
 	"wokey/routes/home"
 	"wokey/routes/login"
@@ -38,6 +39,7 @@ func StartServer() {
 		http.ServeFile(w, h, "build/manifest.json")
 	})
 	http.Handle("/", r)
-	log.Print("Server listening on :3000/")
+	r.HandleFunc("/all-issues", api.AllIssuesHandler)
+	log.Print("Server listening on :3000")
 	http.ListenAndServe("0.0.0.0:3000", nil)
 }
