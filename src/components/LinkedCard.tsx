@@ -2,7 +2,15 @@ import React, { Component } from 'react'
 import { ArcherElement } from 'react-archer'
 import './components.scss'
 
-export default class LinkedCard extends Component {
+type Props = {
+  archerId: string
+  title: string
+  subtitle: string
+  desc: string
+  children?: never
+}
+
+export default class LinkedCard extends Component<Props> {
   render() {
     return (
       <ArcherElement id={this.props.archerId}>

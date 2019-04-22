@@ -5,7 +5,15 @@ import './containers.css'
 
 import { ArcherContainer } from 'react-archer'
 
-export default class Space extends Component {
+import { BaseCardItem, LinkedCardItem } from '../data/types'
+
+type Props = {
+  data: {
+    linkedCards: Array<LinkedCardItem>
+    baseCards: Array<BaseCardItem>
+  }
+}
+export default class Space extends Component<Props> {
   state = {
     currentSelectionIdx: 0,
   }
@@ -28,15 +36,14 @@ export default class Space extends Component {
                   key={'base-' + card.id}
                   archerId={'root-' + card.id}
                   targetIds={
-                    i === this.state.currentSelectionIdx &&
-                    card.linkedCards.map(c => c.id.toString())
+                    i === this.state.currentSelectionIdx
+                      ? card.linkedCards.map(c => c.id)
+                      : undefined
                   }
                   title={card.title}
                   desc={card.desc}
                   subtitle={card.subtitle}
-                  onClick={() => {
-                    this.setState({ currentSelectionIdx: i })
-                  }}
+                  onClick={() => this.setState({ currentSelectionIdx: i })}
                 />
               ))}
             </div>
@@ -48,8 +55,8 @@ export default class Space extends Component {
                 this.state.currentSelectionIdx
               ].linkedCards.map(c => (
                 <LinkedCard
-                  key={'linked-' + c.id.toString()}
-                  archerId={c.id.toString()}
+                  key={'linked-' + c.id}
+                  archerId={c.id}
                   title={c.title}
                   subtitle={c.subtitle}
                   desc={c.desc}

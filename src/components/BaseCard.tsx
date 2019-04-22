@@ -2,7 +2,16 @@ import React, { Component } from 'react'
 import { ArcherElement } from 'react-archer'
 import './components.scss'
 
-export default class BaseCard extends Component {
+type Props = {
+  onClick: () => void
+  targetIds?: Array<string>
+  archerId: string
+  title: string
+  subtitle: string
+  desc: string
+  children?: never
+}
+export default class BaseCard extends Component<Props> {
   render() {
     return (
       <div
