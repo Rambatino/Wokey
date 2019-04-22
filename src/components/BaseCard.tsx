@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import { ArcherElement } from 'react-archer'
+import './components.scss'
 
 export default class BaseCard extends Component {
   render() {
     return (
-      <div className="BaseCard" style={{ marginBottom: 20 }}>
+      <div
+        className="BaseCard"
+        style={{ marginBottom: 20 }}
+        onClick={this.props.onClick}
+      >
         <ArcherElement
           id={this.props.archerId}
           relations={(this.props.targetIds || []).map(id => {
@@ -16,13 +21,11 @@ export default class BaseCard extends Component {
             }
           })}
         >
-          <div className="card" style={{ width: '20rem' }}>
+          <div className="card">
             <div className="card-body">
-              <h5 className="card-title">Base Card</h5>
-              <p className="card-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua
-              </p>
+              <h5 className="card-title">{this.props.title}</h5>
+              <p className="card-key">{this.props.subtitle}</p>
+              <div className="card-text">{this.props.desc}</div>
             </div>
           </div>
         </ArcherElement>
