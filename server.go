@@ -39,7 +39,8 @@ func StartServer() {
 		http.ServeFile(w, h, "build/manifest.json")
 	})
 	http.Handle("/", r)
-	r.HandleFunc("/all-issues", api.AllIssuesHandler)
+	r.HandleFunc("/issues", api.AllIssuesHandler)
+	r.HandleFunc("/prs", api.AllCurrentPullRequests)
 	log.Print("Server listening on :3000")
 	http.ListenAndServe("0.0.0.0:3000", nil)
 }
