@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
 import { ArcherElement } from 'react-archer'
 import './components.scss'
+import { Item } from '../store/types'
 
 type Props = {
   onClick: () => void
   targetIds?: Array<string>
   archerId: string
-  title: string
-  subtitle: string
-  desc?: string
-  descHtml?: string
+  item: Item
   children?: never
 }
 export default class BaseCardItem extends Component<Props> {
@@ -29,15 +27,15 @@ export default class BaseCardItem extends Component<Props> {
         >
           <div className="card">
             <div className="card-body">
-              <p className="card-title">{this.props.title}</p>
-              <p className="card-key">{this.props.subtitle}</p>
-              {this.props.desc && (
-                <div className="card-text">{this.props.desc}</div>
+              <p className="card-title">{this.props.item.title}</p>
+              <p className="card-key">{this.props.item.subtitle}</p>
+              {this.props.item.desc && (
+                <div className="card-text">{this.props.item.desc}</div>
               )}
-              {this.props.descHtml && (
+              {this.props.item.descHtml && (
                 <div
                   className="card-text"
-                  dangerouslySetInnerHTML={{ __html: this.props.descHtml }}
+                  dangerouslySetInnerHTML={{ __html: this.props.item.descHtml }}
                 />
               )}
             </div>

@@ -33,9 +33,7 @@ export default class Space extends Component<Props> {
                       ? card.linkedCards && card.linkedCards.map(c => c.item.id)
                       : undefined
                   }
-                  title={card.item.title}
-                  desc={card.item.descHtml}
-                  subtitle={card.item.subtitle}
+                  item={card.item}
                   onClick={() => this.setState({ currentSelectionIdx: i })}
                 />
               ))}
@@ -51,17 +49,15 @@ export default class Space extends Component<Props> {
     return (
       this.props.data.baseCards.length > this.state.currentSelectionIdx &&
       this.props.data.baseCards[this.state.currentSelectionIdx].linkedCards &&
-      this.props.data.baseCards[this.state.currentSelectionIdx].linkedCards.map(
-        c => (
-          <LinkedCardItem
-            key={'linked-' + c.item.id}
-            archerId={c.item.id}
-            title={c.item.title}
-            subtitle={c.item.subtitle}
-            desc={c.item.desc}
-          />
-        )
-      )
+      this.props.data.baseCards[
+        this.state.currentSelectionIdx
+      ].linkedCards!.map(c => (
+        <LinkedCardItem
+          key={'linked-' + c.item.id}
+          archerId={c.item.id}
+          item={c.item}
+        />
+      ))
     )
   }
 }

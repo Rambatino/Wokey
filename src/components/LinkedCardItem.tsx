@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import { ArcherElement } from 'react-archer'
 import './components.scss'
+import { Item } from '../store/types'
 
 type Props = {
   archerId: string
-  title: string
-  subtitle: string
-  desc: string
+  item: Item
   children?: never
 }
 
@@ -17,9 +16,9 @@ export default class LinkedCardItem extends Component<Props> {
         <div className="LinkedCard">
           <div className="card">
             <div className="card-body">
-              <p className="card-title">{this.props.title}</p>
-              <p className="card-subtitle">{this.props.subtitle}</p>
-              <div className="card-text">{this.props.desc}</div>
+              <p className="card-title">{this.props.item.title}</p>
+              <p className="card-subtitle">{this.props.item.subtitle}</p>
+              <div className="card-text">{this.props.item.desc}</div>
             </div>
           </div>
         </div>

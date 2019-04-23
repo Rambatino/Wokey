@@ -1,7 +1,7 @@
 export interface Item {
   id: string
-  desc: string
-  descHtml: string
+  desc?: string
+  descHtml?: string
   title: string
   subtitle: string
   url: string
