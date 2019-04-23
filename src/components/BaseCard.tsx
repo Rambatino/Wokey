@@ -9,7 +9,7 @@ type Props = {
   title: string
   subtitle: string
   desc?: string
-  descHtml: string
+  descHtml?: string
   children?: never
 }
 export default class BaseCard extends Component<Props> {
