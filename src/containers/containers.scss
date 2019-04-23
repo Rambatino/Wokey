@@ -1,0 +1,27 @@
+.space {
+  display: flex;
+  margin-top: 2rem;
+}
+
+.baseSpace {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-direction: column;
+  .card {
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+  }
+  margin-right: 2rem;
+}
+
+.linkedSpace {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  align-items: flex-start;
+  .card {
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+  }
+}

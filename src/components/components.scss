@@ -4,7 +4,6 @@
   background-clip: border-box;
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
-  padding: 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol';
@@ -15,26 +14,33 @@
   height: 300px;
   width: 20rem;
   overflow: hidden;
+  position: relative;
+  // margin-bottom: 1rem;
 }
 
+.BaseCard {
+  .card {
+    // margin-left: 1rem;
+  }
+}
 .LinkedCard {
   .card {
-    margin-bottom: 20px;
-    margin-right: 20px;
+    // margin-bottom: 1rem;
+    // margin-right: 1rem;
   }
 }
 
 .card-body {
   overflow: hidden;
+  padding: 1rem;
 }
 
-.card:after {
+.card-body:after {
   content: '';
   position: absolute;
   z-index: 1;
-  bottom: 0.1em;
-  left: 0.1em;
-  right: 0em;
+  bottom: 0em;
+  left: 0em;
   pointer-events: none;
   background-image: linear-gradient(
     to bottom,

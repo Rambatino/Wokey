@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import LinkedCard from '../components/LinkedCard'
 import BaseCard from '../components/BaseCard'
-import './containers.css'
+import './containers.scss'
 
 import { ArcherContainer } from 'react-archer'
 
@@ -22,15 +22,8 @@ export default class Space extends Component<Props> {
     return (
       <div>
         <ArcherContainer strokeColor="red">
-          <div style={{ display: 'flex' }}>
-            <div
-              className="baseSpace"
-              style={{
-                marginTop: 20,
-                marginLeft: 20,
-                marginRight: 15,
-              }}
-            >
+          <div className="space">
+            <div className="baseSpace">
               {this.props.data.baseCards.map((card, i) => (
                 <BaseCard
                   key={'base-' + card.id}
@@ -47,10 +40,7 @@ export default class Space extends Component<Props> {
                 />
               ))}
             </div>
-            <div
-              className="linkedSpace"
-              style={{ flex: 1, marginTop: 20, marginLeft: 15 }}
-            >
+            <div className="linkedSpace">
               {this.props.data.baseCards.length >
                 this.state.currentSelectionIdx &&
                 this.props.data.baseCards[this.state.currentSelectionIdx]

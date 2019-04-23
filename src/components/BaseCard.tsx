@@ -15,11 +15,7 @@ type Props = {
 export default class BaseCard extends Component<Props> {
   render() {
     return (
-      <div
-        className="BaseCard"
-        style={{ marginBottom: 20 }}
-        onClick={this.props.onClick}
-      >
+      <div className="BaseCard" onClick={this.props.onClick}>
         <ArcherElement
           id={this.props.archerId}
           relations={(this.props.targetIds || []).map(id => {
@@ -33,7 +29,7 @@ export default class BaseCard extends Component<Props> {
         >
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">{this.props.title}</h5>
+              <p className="card-title">{this.props.title}</p>
               <p className="card-key">{this.props.subtitle}</p>
               {this.props.desc && (
                 <div className="card-text">{this.props.desc}</div>
