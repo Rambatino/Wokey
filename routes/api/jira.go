@@ -12,7 +12,7 @@ import (
 type Resp struct {
 	ID       string `json:"id"`
 	Desc     string `json:"desc"`
-	DescHtml string `json:"desc_html"`
+	DescHtml string `json:"descHtml"`
 	Title    string `json:"title"`
 	SubTitle string `json:"subtitle"`
 	Url      string `json:"url"`

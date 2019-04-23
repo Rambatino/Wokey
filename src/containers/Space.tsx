@@ -34,7 +34,7 @@ export default class Space extends Component<Props> {
                       : undefined
                   }
                   title={card.item.title}
-                  desc={card.item.desc_html}
+                  desc={card.item.descHtml}
                   subtitle={card.item.subtitle}
                   onClick={() => this.setState({ currentSelectionIdx: i })}
                 />

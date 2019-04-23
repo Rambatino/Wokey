@@ -1,4 +1,12 @@
-import { Item } from '../actions/actionTypes'
+export interface Item {
+  id: string
+  desc: string
+  descHtml: string
+  title: string
+  subtitle: string
+  url: string
+  state: string
+}
 
 export interface LinkedCard {
   item: Item
@@ -6,7 +14,7 @@ export interface LinkedCard {
 
 export interface BaseCard {
   item: Item
-  linkedCards: Array<LinkedCard>
+  linkedCards?: Array<LinkedCard>
 }
 
 interface Config {}
@@ -14,5 +22,5 @@ interface Config {}
 export interface Store {
   linkedCards: Array<LinkedCard>
   baseCards: Array<BaseCard>
-  config: Config
+  config?: Config
 }

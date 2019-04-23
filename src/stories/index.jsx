@@ -8,14 +8,14 @@ import { Button, Welcome } from '@storybook/react/demo'
 
 import Space from '../containers/Space'
 import spaceData from './space'
-import BaseCard from '../components/BaseCard'
-import LinkedCard from '../components/LinkedCard'
+import BaseCardItem from '../components/BaseCardItem'
+import LinkedCardItem from '../components/LinkedCardItem'
 import { ArcherContainer } from 'react-archer'
 
 storiesOf('Workspace', module)
   .add('Base Card', () => (
     <ArcherContainer>
-      <BaseCard
+      <BaseCardItem
         state="Ready for Code Review"
         url="https://zigroup.atlassian.net/browse/STATS-302"
         title="CTA incorrect shows question text instead of measure name"
@@ -28,7 +28,7 @@ storiesOf('Workspace', module)
   ))
   .add('Link Card', () => (
     <ArcherContainer>
-      <LinkedCard
+      <LinkedCardItem
         title="Link Card"
         desc={
           <p>
@@ -47,7 +47,7 @@ storiesOf('Workspace', module)
         }
         subtitle="Subtitle 1"
       />
-      <LinkedCard
+      <LinkedCardItem
         title="Link Card Short Desc"
         desc={
           <p>
