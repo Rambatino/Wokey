@@ -47,7 +47,7 @@ export default class Space extends Component<Props> {
 
   linkedCards = () => {
     return (
-      this.props.data.baseCards.length > this.state.currentSelectionIdx &&
+      this.props.data.baseCards[this.state.currentSelectionIdx] &&
       this.props.data.baseCards[this.state.currentSelectionIdx].linkedCards &&
       this.props.data.baseCards[
         this.state.currentSelectionIdx
