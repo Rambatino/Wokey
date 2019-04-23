@@ -21,28 +21,30 @@ export default class Space extends Component<Props> {
   render() {
     return (
       <div>
-        <ArcherContainer strokeColor="red">
+        <ArcherContainer>
           <div className="space">
-            <div className="baseSpace">
-              {this.props.data.baseCards.map((card, i) => (
-                <BaseCardItem
-                  key={'base-' + card.item.id}
-                  archerId={'root-' + card.item.id}
-                  targetIds={
-                    i === this.state.currentSelectionIdx
-                      ? card.linkedCards && card.linkedCards.map(c => c.item.id)
-                      : undefined
-                  }
-                  item={card.item}
-                  onClick={() => this.setState({ currentSelectionIdx: i })}
-                />
-              ))}
-            </div>
+            <div className="baseSpace">{this.baseCards()}</div>
             <div className="linkedSpace">{this.linkedCards()}</div>
           </div>
         </ArcherContainer>
       </div>
     )
+  }
+
+  baseCards = () => {
+    return this.props.data.baseCards.map((card, i) => (
+      <BaseCardItem
+        key={'base-' + card.item.id}
+        archerId={'root-' + card.item.id}
+        targetIds={
+          i === this.state.currentSelectionIdx
+            ? card.linkedCards && card.linkedCards.map(c => c.item.id)
+            : undefined
+        }
+        item={card.item}
+        onClick={() => this.setState({ currentSelectionIdx: i })}
+      />
+    ))
   }
 
   linkedCards = () => {

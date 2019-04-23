@@ -104,20 +104,20 @@ export default {
           'Lorem ipsum Lorem ipsumLorem ipsumLorem iLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumpsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumdolor sit amet',
         state: 'blocked (internal)',
         url: 'http://www.lolcat.com',
-        linkedCards: [
-          {
-            item: {
-              id: '9381',
-              title: 'Lorem Link Card',
-              subtitle: 'Work/myRepo',
-              desc:
-                'Lorem ipsum Lorem ipsumLorem ipsumLorem iLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumpsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumdolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
-              url: 'http://www.lolcat.com',
-              state: '',
-            },
-          },
-        ],
       },
+      linkedCards: [
+        {
+          item: {
+            id: '9381',
+            title: 'Lorem Link Card',
+            subtitle: 'Work/myRepo',
+            desc:
+              'Lorem ipsum Lorem ipsumLorem ipsumLorem iLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumpsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumdolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+            url: 'http://www.lolcat.com',
+            state: '',
+          },
+        },
+      ],
     },
   ],
   config: {},
