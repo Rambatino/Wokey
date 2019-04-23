@@ -15,7 +15,15 @@ import { ArcherContainer } from 'react-archer'
 storiesOf('Workspace', module)
   .add('Base Card', () => (
     <ArcherContainer>
-      <BaseCard title="title" desc="desc" subtitle="subtitle" />
+      <BaseCard
+        state="Ready for Code Review"
+        url="https://zigroup.atlassian.net/browse/STATS-302"
+        title="CTA incorrect shows question text instead of measure name"
+        descHtml={
+          '\u003cp\u003eCTA now shows question text instead of measure names.\u003c/p\u003e\n\n\u003cp\u003e \u003cspan class="error"\u003eUnable to render embedded object: File (image-2019-02-01-15-18-49-806.png) not found.\u003c/span\u003e \u003c/p\u003e\n\n\u003cp\u003e\u003ca href="https://www.zappistore.com/app/analysis/video_creative_test/explore/44917,44913,44894,44897,44898/stats/view/Content%20Theme%20Analysis/pages/6377587" class="external-link" rel="nofollow"\u003ehttps://www.zappistore.com/app/analysis/video_creative_test/explore/44917,44913,44894,44897,44898/stats/view/Content%20Theme%20Analysis/pages/6377587\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003eUAC:\u003c/p\u003e\n\n\u003cp\u003eCTA shows measure names instead of question text. \u003c/p\u003e\n'
+        }
+        subtitle="STATS-302"
+      />
     </ArcherContainer>
   ))
   .add('Link Card', () => (

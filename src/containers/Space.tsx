@@ -37,11 +37,11 @@ export default class Space extends Component<Props> {
                   archerId={'root-' + card.id}
                   targetIds={
                     i === this.state.currentSelectionIdx
-                      ? card.linkedCards.map(c => c.id)
+                      ? card.linkedCards && card.linkedCards.map(c => c.id)
                       : undefined
                   }
                   title={card.title}
-                  desc={card.desc}
+                  desc={card.desc_html}
                   subtitle={card.subtitle}
                   onClick={() => this.setState({ currentSelectionIdx: i })}
                 />
@@ -51,17 +51,21 @@ export default class Space extends Component<Props> {
               className="linkedSpace"
               style={{ flex: 1, marginTop: 20, marginLeft: 15 }}
             >
-              {this.props.data.baseCards[
-                this.state.currentSelectionIdx
-              ].linkedCards.map(c => (
-                <LinkedCard
-                  key={'linked-' + c.id}
-                  archerId={c.id}
-                  title={c.title}
-                  subtitle={c.subtitle}
-                  desc={c.desc}
-                />
-              ))}
+              {this.props.data.baseCards.length >
+                this.state.currentSelectionIdx &&
+                this.props.data.baseCards[this.state.currentSelectionIdx]
+                  .linkedCards &&
+                this.props.data.baseCards[
+                  this.state.currentSelectionIdx
+                ].linkedCards.map(c => (
+                  <LinkedCard
+                    key={'linked-' + c.id}
+                    archerId={c.id}
+                    title={c.title}
+                    subtitle={c.subtitle}
+                    desc={c.desc}
+                  />
+                ))}
             </div>
           </div>
         </ArcherContainer>
