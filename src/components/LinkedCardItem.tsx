@@ -10,7 +10,7 @@ type Props = {
   children?: never
 }
 
-export default class LinkedCard extends Component<Props> {
+export default class LinkedCardItem extends Component<Props> {
   render() {
     return (
       <ArcherElement id={this.props.archerId}>

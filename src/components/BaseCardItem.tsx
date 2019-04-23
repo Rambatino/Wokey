@@ -12,7 +12,7 @@ type Props = {
   descHtml?: string
   children?: never
 }
-export default class BaseCard extends Component<Props> {
+export default class BaseCardItem extends Component<Props> {
   render() {
     return (
       <div className="BaseCard" onClick={this.props.onClick}>

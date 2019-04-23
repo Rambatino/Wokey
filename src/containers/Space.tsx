@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import LinkedCard from '../components/LinkedCard'
-import BaseCard from '../components/BaseCard'
+import LinkedCardItem from '../components/LinkedCardItem'
+import BaseCardItem from '../components/BaseCardItem'
 import './containers.scss'
 
 import { ArcherContainer } from 'react-archer'
 
-import { BaseCardItem, LinkedCardItem } from '../data/types'
+import { BaseCard, LinkedCard } from '../store/types'
 
 type Props = {
   data: {
-    linkedCards: Array<LinkedCardItem>
-    baseCards: Array<BaseCardItem>
+    linkedCards: Array<LinkedCard>
+    baseCards: Array<BaseCard>
   }
 }
 export default class Space extends Component<Props> {
@@ -25,41 +25,43 @@ export default class Space extends Component<Props> {
           <div className="space">
             <div className="baseSpace">
               {this.props.data.baseCards.map((card, i) => (
-                <BaseCard
-                  key={'base-' + card.id}
-                  archerId={'root-' + card.id}
+                <BaseCardItem
+                  key={'base-' + card.item.id}
+                  archerId={'root-' + card.item.id}
                   targetIds={
                     i === this.state.currentSelectionIdx
-                      ? card.linkedCards && card.linkedCards.map(c => c.id)
+                      ? card.linkedCards && card.linkedCards.map(c => c.item.id)
                       : undefined
                   }
-                  title={card.title}
-                  desc={card.desc_html}
-                  subtitle={card.subtitle}
+                  title={card.item.title}
+                  desc={card.item.desc_html}
+                  subtitle={card.item.subtitle}
                   onClick={() => this.setState({ currentSelectionIdx: i })}
                 />
               ))}
             </div>
-            <div className="linkedSpace">
-              {this.props.data.baseCards.length >
-                this.state.currentSelectionIdx &&
-                this.props.data.baseCards[this.state.currentSelectionIdx]
-                  .linkedCards &&
-                this.props.data.baseCards[
-                  this.state.currentSelectionIdx
-                ].linkedCards.map(c => (
-                  <LinkedCard
-                    key={'linked-' + c.id}
-                    archerId={c.id}
-                    title={c.title}
-                    subtitle={c.subtitle}
-                    desc={c.desc}
-                  />
-                ))}
-            </div>
+            <div className="linkedSpace">{this.linkedCards()}</div>
           </div>
         </ArcherContainer>
       </div>
+    )
+  }
+
+  linkedCards = () => {
+    return (
+      this.props.data.baseCards.length > this.state.currentSelectionIdx &&
+      this.props.data.baseCards[this.state.currentSelectionIdx].linkedCards &&
+      this.props.data.baseCards[this.state.currentSelectionIdx].linkedCards.map(
+        c => (
+          <LinkedCardItem
+            key={'linked-' + c.item.id}
+            archerId={c.item.id}
+            title={c.item.title}
+            subtitle={c.item.subtitle}
+            desc={c.item.desc}
+          />
+        )
+      )
     )
   }
 }

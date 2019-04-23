@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import Space from './containers/Space'
-import { BaseCardItem, LinkedCardItem } from './data/types'
+import { BaseCard, LinkedCard } from './store/types'
 
 type State = {
-  linkedCards: Array<LinkedCardItem>
-  baseCards: Array<BaseCardItem>
+  linkedCards: Array<LinkedCard>
+  baseCards: Array<BaseCard>
 }
 
 class App extends Component<{}, State> {
@@ -18,13 +18,13 @@ class App extends Component<{}, State> {
     fetch('/issues')
       .then(res => res.json())
       .then(res => {
-        this.setState({
-          baseCards: res as Array<BaseCardItem>,
-        })
+        this.setState({})
       })
+      .catch(err => console.log(err))
     fetch('/prs')
       .then(res => res.json())
       .then(res => {})
+      .catch(err => console.log(err))
   }
 
   render() {

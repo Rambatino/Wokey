@@ -40,7 +40,7 @@ func StartServer() {
 	})
 	http.Handle("/", r)
 	r.HandleFunc("/issues", api.AllIssuesHandler)
-	r.HandleFunc("/prs", api.AllCurrentPullRequests)
+	r.HandleFunc("/pulls", api.AllCurrentPullRequests)
 	log.Print("Server listening on :3000")
 	http.ListenAndServe("0.0.0.0:3000", nil)
 }
