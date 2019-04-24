@@ -16,8 +16,15 @@
   overflow-y: auto;
   height: 95vh;
   min-width: 21.2rem;
-}
 
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.baseSpace::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
+}
 .linkedSpace {
   display: flex;
   flex-wrap: wrap;
@@ -30,4 +37,12 @@
   height: 95vh;
   -webkit-flex: 1 1 auto;
   overflow-y: auto;
+
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.linkedSpace::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
 }
