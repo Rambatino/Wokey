@@ -1,4 +1,4 @@
-import { Store } from '../store/types'
+import { Cards } from '../store/cards/types'
 
 export default {
   linkedCards: [
@@ -120,5 +120,4 @@ export default {
       ],
     },
   ],
-  config: {},
-} as Store
+} as Cards

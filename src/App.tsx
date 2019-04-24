@@ -1,39 +1,43 @@
 import React, { Component } from 'react'
-import logo from './logo.svg'
 import './App.css'
 import Space from './containers/Space'
-import { BaseCard, LinkedCard } from './store/types'
+import { Cards, CardThunkDispatch } from './store/cards/types'
+import { fetchPulls, fetchIssues } from './store/cards/actions'
+import { AppState } from './store'
+import { connect } from 'react-redux'
 
-type State = {
-  linkedCards: Array<LinkedCard>
-  baseCards: Array<BaseCard>
+// https://github.com/reduxjs/redux-thunk/issues/213
+interface AppProps {
+  fetchPulls: typeof fetchPulls
+  fetchIssues: typeof fetchIssues
+  cards: Cards
 }
 
-class App extends Component<{}, State> {
-  state = {
-    linkedCards: [],
-    baseCards: [],
-  }
+class App extends Component<AppProps> {
   componentDidMount() {
-    fetch('/issues')
-      .then(res => res.json())
-      .then(res => {
-        this.setState({})
-      })
-      .catch(err => console.log(err))
-    fetch('/prs')
-      .then(res => res.json())
-      .then(res => {})
-      .catch(err => console.log(err))
+    this.props.fetchPulls()
+    this.props.fetchIssues()
   }
 
   render() {
     return (
       <div className="App">
-        <Space data={this.state} />
+        <Space data={this.props.cards} />
       </div>
     )
   }
 }
 
-export default App
+const mapStateToProps = (state: AppState) => ({
+  cards: state.cards,
+})
+
+const mapDispatchToProps = (dispatch: CardThunkDispatch) => ({
+  fetchPulls: () => dispatch(fetchPulls),
+  fetchIssues: () => dispatch(fetchIssues),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)

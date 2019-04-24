@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { ArcherElement } from 'react-archer'
 import './components.scss'
-import { Item } from '../store/types'
+import { Item } from '../store/cards/types'
 
 type Props = {
   onClick: () => void

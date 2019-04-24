@@ -1,11 +1,15 @@
-import initialState from './initialState'
-import { SET_ISSUES, SET_PULLS, SetActionTypes } from '../actions/actionTypes'
-import { Store, BaseCard, LinkedCard } from '../store/types'
+import { SET_ISSUES, SET_PULLS, SetActionTypes } from './types'
+import { Cards, BaseCard, LinkedCard } from './types'
 
-export default function cards(
-  state: Store = initialState,
+const initialState: Cards = {
+  linkedCards: [],
+  baseCards: [],
+}
+
+export default function cardsReducer(
+  state: Cards = initialState,
   action: SetActionTypes
-): Store {
+): Cards {
   switch (action.type) {
     case SET_ISSUES:
       return {
@@ -13,7 +17,6 @@ export default function cards(
         baseCards: action.payload.map(item => {
           return { item: item, linkedCards: [] } as BaseCard
         }),
-        config: state.config,
       }
     case SET_PULLS:
       return {
@@ -21,7 +24,6 @@ export default function cards(
           return { item: item } as LinkedCard
         }),
         baseCards: [...state.baseCards],
-        config: state.config,
       }
     default:
       return state

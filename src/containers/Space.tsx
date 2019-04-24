@@ -5,7 +5,7 @@ import './containers.scss'
 
 import { ArcherContainer, ArcherContainerProps } from 'react-archer'
 
-import { BaseCard, LinkedCard } from '../store/types'
+import { BaseCard, LinkedCard } from '../store/cards/types'
 
 type Props = {
   data: {
@@ -39,7 +39,10 @@ export default class Space extends Component<Props, State> {
   }
 
   isScrolling = () => {
-    this.archerContainerRef!.current!.forceUpdate()
+    // need a better solution for the below
+    this.archerContainerRef &&
+      this.archerContainerRef.current &&
+      (this.archerContainerRef.current as any).forceUpdate()
   }
 
   render() {

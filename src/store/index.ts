@@ -1,6 +1,14 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import rootReducer from '../reducers/rootReducer'
 import thunk from 'redux-thunk'
+
+import { combineReducers } from 'redux'
+import cardsReducer from './cards/reducer'
+
+const rootReducer = combineReducers({
+  cards: cardsReducer,
+})
+
+export type AppState = ReturnType<typeof rootReducer>
 
 export default function configureStore() {
   return createStore(
