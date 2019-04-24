@@ -29,14 +29,15 @@ export default class BaseCardItem extends Component<Props> {
             <div className="card-body">
               <p className="card-title">{this.props.item.title}</p>
               <p className="card-key">{this.props.item.subtitle}</p>
-              {this.props.item.desc && (
-                <div className="card-text">{this.props.item.desc}</div>
-              )}
-              {this.props.item.descHtml && (
+              {this.props.item.descHtml ? (
                 <div
                   className="card-text"
                   dangerouslySetInnerHTML={{ __html: this.props.item.descHtml }}
                 />
+              ) : (
+                this.props.item.desc && (
+                  <div className="card-text">{this.props.item.desc}</div>
+                )
               )}
             </div>
           </div>
