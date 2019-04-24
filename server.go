@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 	"wokey/routes/api"
 	"wokey/routes/callback"
 	"wokey/routes/home"
@@ -12,6 +13,7 @@ import (
 	"wokey/routes/user"
 
 	"github.com/codegangsta/negroni"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -38,7 +40,7 @@ func StartServer() {
 	r.PathPrefix("/manifest.json").HandlerFunc(func(w http.ResponseWriter, h *http.Request) {
 		http.ServeFile(w, h, "build/manifest.json")
 	})
-	http.Handle("/", r)
+	http.Handle("/", handlers.LoggingHandler(os.Stdout, r))
 	r.HandleFunc("/issues", api.AllIssuesHandler)
 	r.HandleFunc("/pulls", api.AllCurrentPullRequests)
 	log.Print("Server listening on :3000")
