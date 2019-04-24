@@ -1,5 +1,5 @@
 import { ThunkDispatch } from 'redux-thunk'
-import { Action } from 'redux'
+import { AnyAction } from 'redux'
 
 export interface Item {
   id: string
@@ -40,4 +40,4 @@ interface SetPullsAction {
 
 export type SetActionTypes = SetIssuesAction | SetPullsAction
 
-export type CardThunkDispatch = ThunkDispatch<Cards, void, Action>
+export type CardThunkDispatch = ThunkDispatch<Cards, void, AnyAction>

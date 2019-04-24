@@ -8,8 +8,8 @@ import { connect } from 'react-redux'
 
 // https://github.com/reduxjs/redux-thunk/issues/213
 interface AppProps {
-  fetchPulls: typeof fetchPulls
-  fetchIssues: typeof fetchIssues
+  fetchPulls: () => void
+  fetchIssues: () => void
   cards: Cards
 }
 
@@ -33,8 +33,8 @@ const mapStateToProps = (state: AppState) => ({
 })
 
 const mapDispatchToProps = (dispatch: CardThunkDispatch) => ({
-  fetchPulls: () => dispatch(fetchPulls),
-  fetchIssues: () => dispatch(fetchIssues),
+  fetchPulls: () => dispatch(fetchPulls()),
+  fetchIssues: () => dispatch(fetchIssues()),
 })
 
 export default connect(

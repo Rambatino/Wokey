@@ -1,5 +1,5 @@
 import { ThunkAction } from 'redux-thunk'
-import { Action } from 'redux'
+import { Action, AnyAction } from 'redux'
 import {
   Item,
   Cards,
@@ -34,8 +34,8 @@ function setPulls(pulls: Array<Item>): SetActionTypes {
 export const fetchIssues = (): ThunkAction<
   void,
   Cards,
-  null,
-  Action<string>
+  void,
+  AnyAction
 > => async (dispatch: CardThunkDispatch) => {
   const response = await fetch(issuesUrl())
   const json = await response.json()
@@ -45,8 +45,8 @@ export const fetchIssues = (): ThunkAction<
 export const fetchPulls = (): ThunkAction<
   void,
   Cards,
-  null,
-  Action<string>
+  void,
+  AnyAction
 > => async (dispatch: CardThunkDispatch) => {
   const response = await fetch(pullsUrl())
   const json = await response.json()
