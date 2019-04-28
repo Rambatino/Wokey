@@ -5,10 +5,12 @@ export interface Item {
   id: string
   desc?: string
   descHtml?: string
+  descMarkdown?: string
   title: string
   subtitle: string
   url: string
   state: string
+  branch?: string
 }
 
 export interface LinkedCard {

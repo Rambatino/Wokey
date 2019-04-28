@@ -1,5 +1,6 @@
 import { SET_ISSUES, SET_PULLS, SetActionTypes } from './types'
 import { Cards, BaseCard, LinkedCard } from './types'
+import { filterCards } from './formatter'
 
 const initialState: Cards = {
   linkedCards: [],
@@ -12,19 +13,35 @@ export default function cardsReducer(
 ): Cards {
   switch (action.type) {
     case SET_ISSUES:
-      return {
-        linkedCards: [...state.linkedCards],
-        baseCards: action.payload.map(item => {
-          return { item: item, linkedCards: [] } as BaseCard
+      console.log(
+        filterCards(
+          action.payload.map(item => {
+            return { item, linkedCards: [] } as BaseCard
+          }),
+          [...state.linkedCards]
+        )
+      )
+      return filterCards(
+        action.payload.map(item => {
+          return { item, linkedCards: [] } as BaseCard
         }),
-      }
+        [...state.linkedCards]
+      )
     case SET_PULLS:
-      return {
-        linkedCards: action.payload.map(item => {
-          return { item: item } as LinkedCard
-        }),
-        baseCards: [...state.baseCards],
-      }
+      console.log(
+        filterCards(
+          action.payload.map(item => {
+            return { item, linkedCards: [] } as BaseCard
+          }),
+          [...state.linkedCards]
+        )
+      )
+      return filterCards(
+        [...state.baseCards],
+        action.payload.map(item => {
+          return { item } as LinkedCard
+        })
+      )
     default:
       return state
   }

@@ -42,7 +42,7 @@ export const fetchIssues = (): ThunkAction<
 > => async (dispatch: CardThunkDispatch) => {
   // const response = await fetch(issuesUrl())
   // const json = await response.json()
-  const json = issues
+  const json = await Promise.resolve(issues)
   return dispatch(setIssues(json))
 }
 
@@ -54,6 +54,6 @@ export const fetchPulls = (): ThunkAction<
 > => async (dispatch: CardThunkDispatch) => {
   // const response = await fetch(pullsUrl())
   // const json = await response.json()
-  const json = issues
+  const json = await Promise.resolve(pulls)
   return dispatch(setPulls(json))
 }
