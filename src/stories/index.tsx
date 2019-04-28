@@ -2,12 +2,34 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import Space from '../containers/Space'
-import spaceData from './space'
+import Board from '../containers/Board'
+import issues from './issues.json'
+import pulls from './pulls.json'
 import BaseCardItem from '../components/BaseCardItem'
 import LinkedCardItem from '../components/LinkedCardItem'
 import { ArcherContainer } from 'react-archer'
+import CardGroup from '../components/CardGroup'
+import { filterCards } from '../store/cards/formatter'
+import { BaseCard, LinkedCard } from '../store/cards/types'
+import Card from '../components/Card'
 
-storiesOf('Workspace', module)
+const spaceData = filterCards(
+  issues.map(i => ({ item: i } as BaseCard)),
+  pulls.map(i => ({ item: i } as LinkedCard))
+)
+storiesOf('New Workspace', module)
+  .add('Card', () => (
+    <Card data={spaceData.baseCards[0].linkedCards[0]} onClick={() => {}} />
+  ))
+  .add('Card Group Empty', () => (
+    <CardGroup data={spaceData.baseCards[5]} onClick={() => {}} />
+  ))
+  .add('Card Group', () => (
+    <CardGroup data={spaceData.baseCards[0]} onClick={() => {}} />
+  ))
+  .add('Board', () => <Board data={spaceData} />)
+
+storiesOf('Old Workspace', module)
   .add('Base Card', () => (
     <ArcherContainer>
       <BaseCardItem

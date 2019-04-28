@@ -11,6 +11,7 @@ export interface Item {
   url: string
   state: string
   branch?: string
+  repo?: string
 }
 
 export interface LinkedCard {
@@ -19,7 +20,7 @@ export interface LinkedCard {
 
 export interface BaseCard {
   item: Item
-  linkedCards?: Array<LinkedCard>
+  linkedCards: Array<LinkedCard>
 }
 
 export interface Cards {

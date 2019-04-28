@@ -9,8 +9,8 @@ import {
   CardThunkDispatch,
 } from './types'
 
-import pulls from './pulls.json'
-import issues from './issues.json'
+import pulls from '../../stories/pulls.json'
+import issues from '../../stories/issues.json'
 
 function issuesUrl() {
   return '/issues'
