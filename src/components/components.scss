@@ -60,7 +60,7 @@
   word-wrap: break-word;
   background-color: #white;
   background-clip: border-box;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  border: 2px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
@@ -74,8 +74,17 @@
   position: relative;
   display: inline-block;
   background-color: #fff;
+  margin: 8px;
 
-  .title {
+  hr {
+    border-color: rgba(0, 0, 0, 0.125);
+    border-width: 1px;
+  }
+
+  .contentTitle {
+    font-weight: 700;
+    background-color: transparent;
+    margin: 10px;
   }
 
   .cards {
@@ -83,7 +92,7 @@
     align-items: center;
     flex-direction: row;
     background-color: transparent;
-    height: 100%;
+    height: 245px;
     margin-right: 10px;
   }
 
@@ -92,15 +101,9 @@
     background-color: transparent;
     height: 100%;
     margin-left: 10px;
-    margin-top: 5px;
     overflow: hidden;
     position: relative;
-
-    .title {
-      font-weight: 700;
-      background-color: transparent;
-      margin: 0;
-    }
+    margin-top: 100px;
 
     .subtitle {
       font-size: 12px;
@@ -125,7 +128,7 @@
         rgba(255, 255, 255, 1) 90%
       );
       width: 100%;
-      height: 1em;
+      height: 3em;
     }
     .state {
       background-color: transparent;
@@ -162,21 +165,23 @@
   }
 
   .title {
-    font-size: 12px;
-    font-weight: 500;
-    margin: 2px;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 4px;
   }
 
   .branch {
     font-weight: 300;
     font-size: 12px;
     margin-left: 2px;
+    margin: 4px;
   }
 
   .desc {
     font-size: 12px;
     overflow: hidden;
     background-color: transparent;
+    margin: 4px;
   }
   .desc:after {
     content: '';
@@ -191,6 +196,6 @@
       rgba(255, 255, 255, 1) 90%
     );
     width: 100%;
-    height: 1em;
+    height: 3em;
   }
 }
