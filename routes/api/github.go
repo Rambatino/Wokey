@@ -54,7 +54,7 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 		for _, rev := range reviews {
 			state = rev.GetState()
 		}
-		// pp.Println(issue)
+
 		pr, _, err := client.PullRequests.Get(ctx, split[0], split[1], issue.GetNumber())
 		if err != nil {
 			pp.Println(err.Error())

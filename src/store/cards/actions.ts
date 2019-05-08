@@ -9,8 +9,8 @@ import {
   CardThunkDispatch,
 } from './types'
 
-import pulls from '../../stories/pulls.json'
-import issues from '../../stories/issues.json'
+// import pulls from '../../stories/pulls.json'
+// import issues from '../../stories/issues.json'
 
 function issuesUrl() {
   return '/issues'
@@ -40,9 +40,10 @@ export const fetchIssues = (): ThunkAction<
   void,
   AnyAction
 > => async (dispatch: CardThunkDispatch) => {
-  // const response = await fetch(issuesUrl())
-  // const json = await response.json()
-  const json = await Promise.resolve(issues)
+  const response = await fetch(issuesUrl())
+  const json = await response.json()
+  console.log(json)
+  // const json = await Promise.resolve(issues)
   return dispatch(setIssues(json))
 }
 
@@ -52,8 +53,9 @@ export const fetchPulls = (): ThunkAction<
   void,
   AnyAction
 > => async (dispatch: CardThunkDispatch) => {
-  // const response = await fetch(pullsUrl())
-  // const json = await response.json()
-  const json = await Promise.resolve(pulls)
+  const response = await fetch(pullsUrl())
+  const json = await response.json()
+  console.log(json)
+  // const json = await Promise.resolve(pulls)
   return dispatch(setPulls(json))
 }
