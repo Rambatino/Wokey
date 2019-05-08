@@ -13,6 +13,18 @@ import (
 	"golang.org/x/oauth2"
 )
 
+type GithubResp struct {
+	ID           string `json:"id"`
+	Desc         string `json:"desc"`
+	DescHtml     string `json:"descHtml"`
+	DescMarkdown string `json:"descMarkdown"`
+	Title        string `json:"title"`
+	SubTitle     string `json:"subtitle"`
+	Url          string `json:"url"`
+	State        string `json:"state"`
+	Branch       string `json:"branch"`
+}
+
 func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 
 	ctx := context.Background()
@@ -29,7 +41,7 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	store := []Resp{}
+	store := []GithubResp{}
 	for _, issue := range prs.Issues {
 		repo := strings.Replace(issue.GetRepositoryURL(), "https://api.github.com/repos/", "", -1)
 		split := strings.Split(repo, "/")
@@ -42,13 +54,20 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 		for _, rev := range reviews {
 			state = rev.GetState()
 		}
-		store = append(store, Resp{
-			ID:       strconv.Itoa(int(issue.GetID())),
-			Desc:     issue.GetBody(),
-			Title:    issue.GetTitle(),
-			SubTitle: repo,
-			State:    state,
-			Url:      issue.GetURL(),
+
+		pr, _, err := client.PullRequests.Get(ctx, split[0], split[1], issue.GetNumber())
+		if err != nil {
+			pp.Println(err.Error())
+			return
+		}
+		store = append(store, GithubResp{
+			ID:           strconv.Itoa(int(issue.GetID())),
+			DescMarkdown: issue.GetBody(),
+			Title:        issue.GetTitle(),
+			SubTitle:     repo,
+			State:        state,
+			Url:          issue.GetURL(),
+			Branch:       pr.GetHead().GetRef(),
 		})
 	}
 	json.NewEncoder(w).Encode(store)

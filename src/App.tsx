@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
-import Space from './containers/Space'
+import Board from './containers/Board'
 import { Cards, CardThunkDispatch } from './store/cards/types'
 import { fetchPulls, fetchIssues } from './store/cards/actions'
 import { AppState } from './store'
@@ -22,7 +22,7 @@ class App extends Component<AppProps> {
   render() {
     return (
       <div className="App">
-        <Space data={this.props.cards} />
+        <Board data={this.props.cards} />
       </div>
     )
   }

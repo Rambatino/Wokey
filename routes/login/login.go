@@ -11,10 +11,8 @@ import (
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
-
 	domain := os.Getenv("AUTH0_DOMAIN")
 	aud := os.Getenv("AUTH0_AUDIENCE")
-
 	conf := &oauth2.Config{
 		ClientID:     os.Getenv("AUTH0_CLIENT_ID"),
 		ClientSecret: os.Getenv("AUTH0_CLIENT_SECRET"),
@@ -34,7 +32,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	b := make([]byte, 32)
 	rand.Read(b)
 	state := base64.StdEncoding.EncodeToString(b)
-
 	session, err := app.Store.Get(r, "state")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -49,6 +46,5 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	audience := oauth2.SetAuthURLParam("audience", aud)
 	url := conf.AuthCodeURL(state, audience)
-
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }

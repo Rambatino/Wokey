@@ -25,13 +25,13 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 			TokenURL: "https://" + domain + "/oauth/token",
 		},
 	}
+
 	state := r.URL.Query().Get("state")
 	session, err := app.Store.Get(r, "state")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	if state != session.Values["state"] {
 		http.Error(w, "Invalid state parameter", http.StatusInternalServerError)
 		return
@@ -48,6 +48,7 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 	// Getting now the userInfo
 	client := conf.Client(context.TODO(), token)
 	resp, err := client.Get("https://" + domain + "/userinfo")
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -77,6 +78,5 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Redirect to logged in page
-	http.Redirect(w, r, "/", http.StatusSeeOther)
-
+	http.Redirect(w, r, "/user", http.StatusSeeOther)
 }

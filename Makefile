@@ -1,13 +1,12 @@
+.PHONY: build
+
 setup:
 	@npm install
 
-build-prod:
+build:
 	@npm run build
 
 serve:
-	# watch and rebuild assets
-	# reload webpage on change
-	@(sleep 2 && open http://localhost:3000)&
 	@go run *.go
 
 storybook:

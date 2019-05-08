@@ -9,7 +9,7 @@ import (
 	"github.com/k0kubun/pp"
 )
 
-type Resp struct {
+type JiraResp struct {
 	ID       string `json:"id"`
 	Desc     string `json:"desc"`
 	DescHtml string `json:"descHtml"`
@@ -38,11 +38,11 @@ func AllIssuesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	store := []Resp{}
+	store := []JiraResp{}
 
 	for _, issue := range u {
 		if issue.Fields.Status.Name != "Done" {
-			store = append(store, Resp{
+			store = append(store, JiraResp{
 				ID:       issue.ID,
 				DescHtml: issue.RenderedFields.Description,
 				Desc:     issue.Fields.Description,
