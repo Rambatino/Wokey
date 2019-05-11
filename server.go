@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 	"wokey/routes/api"
 	"wokey/routes/callback"
 	"wokey/routes/home"
@@ -12,6 +13,7 @@ import (
 	"wokey/routes/user"
 
 	"github.com/codegangsta/negroni"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -26,7 +28,7 @@ func StartServer() {
 		negroni.Wrap(http.HandlerFunc(user.UserHandler)),
 	))
 	r.PathPrefix("/static/").Handler(http.FileServer(http.Dir("build/")))
-	http.Handle("/", r)
+	http.Handle("/", handlers.CombinedLoggingHandler(os.Stdout, r))
 
 	// data things
 	r.HandleFunc("/issues", api.AllIssuesHandler)

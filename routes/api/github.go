@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -42,33 +43,43 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 	}
 
 	store := []GithubResp{}
-	for _, issue := range prs.Issues {
-		repo := strings.Replace(issue.GetRepositoryURL(), "https://api.github.com/repos/", "", -1)
-		split := strings.Split(repo, "/")
-		reviews, _, err := client.PullRequests.ListReviews(ctx, split[0], split[1], issue.GetNumber(), nil)
-		if err != nil {
-			pp.Println(err.Error())
-			return
-		}
-		state := ""
-		for _, rev := range reviews {
-			state = rev.GetState()
-		}
+	log.Println("Issues logged", len(prs.Issues))
 
-		pr, _, err := client.PullRequests.Get(ctx, split[0], split[1], issue.GetNumber())
-		if err != nil {
-			pp.Println(err.Error())
-			return
-		}
-		store = append(store, GithubResp{
-			ID:           strconv.Itoa(int(issue.GetID())),
-			DescMarkdown: issue.GetBody(),
-			Title:        issue.GetTitle(),
-			SubTitle:     repo,
-			State:        state,
-			Url:          issue.GetURL(),
-			Branch:       pr.GetHead().GetRef(),
-		})
+	resp := make(chan GithubResp, len(prs.Issues))
+
+	for _, issue := range prs.Issues {
+
+		go func(i github.Issue) {
+			log.Println(i.GetNumber())
+			repo := strings.Replace(i.GetRepositoryURL(), "https://api.github.com/repos/", "", -1)
+			split := strings.Split(repo, "/")
+
+			reviews, _, err := client.PullRequests.ListReviews(ctx, split[0], split[1], i.GetNumber(), nil)
+			pr, _, err := client.PullRequests.Get(ctx, split[0], split[1], i.GetNumber())
+
+			log.Println("Found", len(reviews), "reviews")
+			if err != nil {
+				pp.Println(err.Error())
+				resp <- GithubResp{}
+				return
+			}
+			state := ""
+			for _, rev := range reviews {
+				state = rev.GetState()
+			}
+
+			resp <- GithubResp{
+				ID:           strconv.Itoa(int(i.GetID())),
+				DescMarkdown: i.GetBody(),
+				Title:        i.GetTitle(),
+				SubTitle:     repo,
+				State:        state,
+				Url:          i.GetURL(),
+				Branch:       pr.GetHead().GetRef(),
+			}
+		}(issue)
+		store = append(store, <-resp)
 	}
+
 	json.NewEncoder(w).Encode(store)
 }
