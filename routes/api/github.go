@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -44,21 +43,18 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 	}
 
 	store := []GithubResp{}
-	log.Println("Issues logged", len(prs.Issues))
 
 	var wg sync.WaitGroup
 	for _, issue := range prs.Issues {
 		wg.Add(1)
 		go func(i github.Issue, w *sync.WaitGroup) {
 			defer w.Done()
-			log.Println(i.GetNumber())
 			repo := strings.Replace(i.GetRepositoryURL(), "https://api.github.com/repos/", "", -1)
 			split := strings.Split(repo, "/")
 
 			reviews, _, err := client.PullRequests.ListReviews(ctx, split[0], split[1], i.GetNumber(), nil)
 			pr, _, err := client.PullRequests.Get(ctx, split[0], split[1], i.GetNumber())
 
-			log.Println("Found", len(reviews), "reviews")
 			if err != nil {
 				pp.Println(err.Error())
 				return
