@@ -1,5 +1,5 @@
 import { ThunkAction } from 'redux-thunk'
-import { Action, AnyAction } from 'redux'
+import { AnyAction } from 'redux'
 import {
   Item,
   Cards,
