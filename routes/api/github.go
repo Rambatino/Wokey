@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/google/go-github/github"
 	"github.com/k0kubun/pp"
@@ -45,11 +46,11 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 	store := []GithubResp{}
 	log.Println("Issues logged", len(prs.Issues))
 
-	resp := make(chan GithubResp, len(prs.Issues))
-
+	var wg sync.WaitGroup
 	for _, issue := range prs.Issues {
-
-		go func(i github.Issue) {
+		wg.Add(1)
+		go func(i github.Issue, w *sync.WaitGroup) {
+			defer w.Done()
 			log.Println(i.GetNumber())
 			repo := strings.Replace(i.GetRepositoryURL(), "https://api.github.com/repos/", "", -1)
 			split := strings.Split(repo, "/")
@@ -60,7 +61,6 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 			log.Println("Found", len(reviews), "reviews")
 			if err != nil {
 				pp.Println(err.Error())
-				resp <- GithubResp{}
 				return
 			}
 			state := ""
@@ -68,7 +68,7 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 				state = rev.GetState()
 			}
 
-			resp <- GithubResp{
+			store = append(store, GithubResp{
 				ID:           strconv.Itoa(int(i.GetID())),
 				DescMarkdown: i.GetBody(),
 				Title:        i.GetTitle(),
@@ -76,10 +76,9 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 				State:        state,
 				Url:          i.GetURL(),
 				Branch:       pr.GetHead().GetRef(),
-			}
-		}(issue)
-		store = append(store, <-resp)
+			})
+		}(issue, &wg)
 	}
-
+	wg.Wait()
 	json.NewEncoder(w).Encode(store)
 }
