@@ -16,11 +16,10 @@ type Props = {
 // all the cards are layed out
 export default class Board extends Component<Props> {
   render() {
-    console.log(this.props)
     return (
       <div className="Board">
         {this.props.data.baseCards.map((card, i) => (
-          <CardGroup key={i} data={card} onClick={() => {}} />
+          <CardGroup key={i} data={card} onClick={() => window.open(card.item.url)} />
         ))}
       </div>
     )

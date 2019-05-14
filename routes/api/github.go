@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -10,7 +11,6 @@ import (
 	"sync"
 
 	"github.com/google/go-github/github"
-	"github.com/k0kubun/pp"
 	"golang.org/x/oauth2"
 )
 
@@ -38,7 +38,7 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 
 	prs, _, err := client.Search.Issues(ctx, "author:"+os.Getenv("GITHUB_USER")+" type:pr state:open", nil) // &github.SearchOptions{ListOptions: github.ListOptions{PerPage: 100}}
 	if err != nil {
-		pp.Println(err.Error())
+		log.Println(err.Error())
 		return
 	}
 
@@ -56,21 +56,20 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 			pr, _, err := client.PullRequests.Get(ctx, split[0], split[1], i.GetNumber())
 
 			if err != nil {
-				pp.Println(err.Error())
+				log.Println(err.Error())
 				return
 			}
 			state := ""
 			for _, rev := range reviews {
 				state = rev.GetState()
 			}
-
 			store = append(store, GithubResp{
 				ID:           strconv.Itoa(int(i.GetID())),
 				DescMarkdown: i.GetBody(),
 				Title:        i.GetTitle(),
 				SubTitle:     repo,
 				State:        state,
-				Url:          i.GetURL(),
+				Url:          pr.GetHTMLURL(),
 				Branch:       pr.GetHead().GetRef(),
 			})
 		}(issue, &wg)

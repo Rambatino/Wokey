@@ -27,7 +27,13 @@ func StartServer() {
 		negroni.HandlerFunc(middlewares.IsAuthenticated),
 		negroni.Wrap(http.HandlerFunc(user.UserHandler)),
 	))
-	r.PathPrefix("/static/").Handler(http.FileServer(http.Dir("build/")))
+	r.PathPrefix("/static/").Handler(http.FileServer(http.Dir("./build")))
+	r.HandleFunc("/manifest.json", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./public/manifest.json")
+	}))
+	r.HandleFunc("/favicon.ico", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./public/favicon.ico")
+	}))
 	http.Handle("/", handlers.CombinedLoggingHandler(os.Stdout, r))
 
 	// data things

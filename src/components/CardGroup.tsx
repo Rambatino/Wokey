@@ -27,7 +27,7 @@ export default class CardGroup extends Component<Props> {
             <div className="state">{this.props.data.item.state}</div>
           </div>
           {this.props.data.linkedCards.map((card, i) => (
-            <Card key={i} data={card} onClick={() => {}} />
+            <Card key={i} data={card} onClick={() => window.open(card.item.url)} />
           ))}
         </div>
       </div>

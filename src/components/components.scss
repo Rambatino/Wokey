@@ -13,6 +13,7 @@
   width: 20rem;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
 }
 
 .card-body {
@@ -54,6 +55,7 @@
   display: inline-block;
   background-color: #fff;
   margin: 8px;
+  cursor: pointer;
 
   hr {
     border-color: rgba(0, 0, 0, 0.125);
