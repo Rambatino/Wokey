@@ -20,13 +20,9 @@ export default class CardGroup extends Component<Props> {
           </div>
           {this.props.data.linkedCards && (
             <div
+              className="cardSeparator"
               style={{
-                width: '0.7px',
-                marginLeft: 10,
-                marginTop: 10,
-                marginBottom: 10,
                 height: this.props.data.linkedCards.length * 65,
-                backgroundColor: '#D8D8D8',
               }}
             />
           )}

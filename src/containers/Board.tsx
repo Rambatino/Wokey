@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import CardGroup from '../components/CardGroup'
-// import BaseCardItem from '../components/BaseCardItem'
 import './containers.scss'
 
 import { BaseCard, LinkedCard } from '../store/cards/types'
@@ -18,10 +17,40 @@ export default class Board extends Component<Props> {
   render() {
     return (
       <div className="Board">
-        {this.props.data.baseCards.map((card, i) => (
-          <CardGroup key={i} data={card} onClick={() => window.open(card.item.url)} />
+        {this.getAllStates().map((state, i) => (
+          <div className="boardRow">
+            <div
+              className="statusTitle"
+              style={{ backgroundColor: i % 2 ? '#F8F8F8' : '#FFF' }}
+            >
+              <p> {state} </p>
+            </div>
+            <div className="verticalLine" />
+            <div
+              className={state}
+              key={state}
+              style={{
+                width: '100%',
+                backgroundColor: i % 2 ? '#F8F8F8' : '#FFF',
+              }}
+            >
+              {this.props.data.baseCards
+                .filter(card => card.item.state === state)
+                .map((card, i) => (
+                  <CardGroup
+                    key={i}
+                    data={card}
+                    onClick={() => window.open(card.item.url)}
+                  />
+                ))}
+            </div>
+          </div>
         ))}
       </div>
     )
+  }
+
+  getAllStates() {
+    return [...new Set(this.props.data.baseCards.map(c => c.item.state))]
   }
 }
