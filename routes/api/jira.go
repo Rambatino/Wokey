@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Rambatino/go-jira"
+	"github.com/andygrunwald/go-jira"
 	"github.com/k0kubun/pp"
 )
 
@@ -41,7 +41,11 @@ func AllIssuesHandler(w http.ResponseWriter, r *http.Request) {
 	store := []JiraResp{}
 
 	for _, issue := range u {
-		if issue.Fields.Status.Name != "Done" {
+		if issue.Fields.Status.Name != "Done" &&
+			issue.Fields.Status.Name != "PBR" &&
+			issue.Fields.Status.Name != "No Further Action" &&
+			issue.Fields.Status.Name != "Existing solution" &&
+			issue.Fields.Status.Name != "Evaluation" {
 			store = append(store, JiraResp{
 				ID:       issue.ID,
 				DescHtml: issue.RenderedFields.Description,

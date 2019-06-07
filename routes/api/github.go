@@ -24,6 +24,8 @@ type GithubResp struct {
 	Url          string `json:"url"`
 	State        string `json:"state"`
 	Branch       string `json:"branch"`
+	Status       string `json:"status"`
+	Repo         string `json:"repo"`
 }
 
 func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
@@ -71,6 +73,8 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 				State:        state,
 				Url:          pr.GetHTMLURL(),
 				Branch:       pr.GetHead().GetRef(),
+				Status:       "failed",
+				Repo:         repo,
 			})
 		}(issue, &wg)
 	}

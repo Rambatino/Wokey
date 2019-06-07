@@ -12,6 +12,7 @@ export interface Item {
   state: string
   branch?: string
   repo?: string
+  status?: string
 }
 
 export interface LinkedCard {

@@ -1,0 +1,74 @@
+hash: 2995d9e6741cc79344f519c7ca0b52da7d3d353cbba181b23575c22f4386cb77
+updated: 2019-05-21T15:09:48.909001+12:00
+imports:
+- name: github.com/andygrunwald/go-jira
+  version: 84a0f1e46f9f716ff0acfa73ba22b2bd8278b239
+- name: github.com/codegangsta/negroni
+  version: c6a59be0ce122566695fbd5e48a77f8f10c8a63a
+- name: github.com/fatih/structs
+  version: 878a968ab22548362a09bdb3322f98b00f470d46
+- name: github.com/golang/protobuf
+  version: 05f48f4eaf0e05663b562bab533cdd472238ce29
+  subpackages:
+  - proto
+- name: github.com/google/go-github
+  version: 901030391ab7f418a984389fd3f8f65e39e5c823
+  subpackages:
+  - github
+- name: github.com/google/go-querystring
+  version: c8c88dbee036db4e4808d1f2ec8c2e15e11c3f80
+  subpackages:
+  - query
+- name: github.com/gorilla/context
+  version: 51ce91d2eaddeca0ef29a71d766bb3634dadf729
+- name: github.com/gorilla/handlers
+  version: 7e0847f9db758cdebd26c149d0ae9d5d0b9c98ce
+- name: github.com/gorilla/mux
+  version: ed099d42384823742bba0bf9a72b53b55c9e2e38
+- name: github.com/gorilla/securecookie
+  version: e65cf8c5df817c89aeb47ecb46064e802e2de943
+- name: github.com/gorilla/sessions
+  version: f57b7e2d29c6211d16ffa52a0998272f75799030
+- name: github.com/joho/godotenv
+  version: 23d116af351c84513e1946b527c88823e476be13
+- name: github.com/k0kubun/pp
+  version: 3d73dea227e0711e38b911ffa6fbafc8ff6b2991
+- name: github.com/mattn/go-colorable
+  version: 3a70a971f94a22f2fa562ffcc7a0eb45f5daf045
+- name: github.com/mattn/go-isatty
+  version: c1975dc15c1d481e8da23f6ed313bb071136b98f
+- name: github.com/pkg/errors
+  version: 2233dee583dcf88f3c8b22cb7a33f05a499800d8
+- name: github.com/Rambatino/Wokey
+  version: 4078169d1e73a1dd6c152f760e401803e0ff5cf2
+  subpackages:
+  - app
+- name: github.com/trivago/tgo
+  version: efdb64f40efe6e7cd3f50415710e7af6a7c316ad
+  subpackages:
+  - tcontainer
+  - treflect
+- name: golang.org/x/net
+  version: d26f9f9a57f3fab6a695bec0d84433c2c50f8bbf
+  subpackages:
+  - context
+  - context/ctxhttp
+- name: golang.org/x/oauth2
+  version: 950ef44c6e079baf075030377d90bf0c7e4b7b7a
+  subpackages:
+  - internal
+- name: golang.org/x/sys
+  version: 7c1e4f34a39c8bf93b6a3379e4ffb3b118ecc614
+  subpackages:
+  - unix
+- name: google.golang.org/appengine
+  version: 311d3c5cf9373249645db030e53c37c209a8b378
+  subpackages:
+  - internal
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/remote_api
+  - internal/urlfetch
+  - urlfetch
+testImports: []
