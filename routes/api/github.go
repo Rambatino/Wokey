@@ -11,6 +11,7 @@ import (
 	"sync"
 
 	"github.com/google/go-github/github"
+	"github.com/k0kubun/pp"
 	"golang.org/x/oauth2"
 )
 
@@ -22,9 +23,9 @@ type GithubResp struct {
 	Title        string `json:"title"`
 	SubTitle     string `json:"subtitle"`
 	Url          string `json:"url"`
-	State        string `json:"state"`
+	State        string `json:"state"` // set by users
 	Branch       string `json:"branch"`
-	Status       string `json:"status"`
+	Status       string `json:"status"` // set by CI
 	Repo         string `json:"repo"`
 }
 
@@ -56,6 +57,7 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 
 			reviews, _, err := client.PullRequests.ListReviews(ctx, split[0], split[1], i.GetNumber(), nil)
 			pr, _, err := client.PullRequests.Get(ctx, split[0], split[1], i.GetNumber())
+			statuses, _, err := client.Repositories.ListStatuses(ctx, split[0], split[1], pr.GetHead().GetSHA(), nil)
 
 			if err != nil {
 				log.Println(err.Error())
@@ -63,8 +65,10 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 			}
 			state := ""
 			for _, rev := range reviews {
-				state = rev.GetState()
+				state = formatStatus(rev.GetState(), state)
+				pp.Println(state)
 			}
+
 			store = append(store, GithubResp{
 				ID:           strconv.Itoa(int(i.GetID())),
 				DescMarkdown: i.GetBody(),
@@ -73,11 +77,40 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 				State:        state,
 				Url:          pr.GetHTMLURL(),
 				Branch:       pr.GetHead().GetRef(),
-				Status:       "failed",
+				Status:       statuses[0].GetState(),
 				Repo:         repo,
 			})
 		}(issue, &wg)
 	}
 	wg.Wait()
 	json.NewEncoder(w).Encode(store)
+}
+
+func formatStatus(newStatus, previousStatus string) string {
+	if newStatus == "" && previousStatus == "" {
+		return ""
+	}
+
+	statusMap := map[string]string{
+		"COMMENTED":       "commented",
+		"REQUEST_CHANGES": "requestChanges",
+		"APPROVED":        "approved",
+	}
+
+	weightMap := map[string]int{
+		"commented":      0,
+		"requestChanges": 1,
+		"approved":       2,
+	}
+
+	mappedStatus := statusMap[newStatus]
+	if previousStatus == "" || mappedStatus == previousStatus {
+		return mappedStatus
+	}
+
+	if weightMap[mappedStatus] > weightMap[previousStatus] {
+		return mappedStatus
+	}
+
+	return previousStatus
 }

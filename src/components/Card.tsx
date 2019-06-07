@@ -22,7 +22,7 @@ export default class Card extends Component<Props> {
       colour: this.green,
       path: <path d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z" />,
     },
-    failed: {
+    failure: {
       colour: this.red,
       path: (
         <path d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z" />
@@ -48,7 +48,7 @@ export default class Card extends Component<Props> {
         </svg>
       </div>
     ),
-    changesRequested: (
+    requestChanges: (
       <div className="stateSymbol" style={{ backgroundColor: this.red }}>
         <svg className="rejectedSVGCircle" width="16" height="16" fill="#FFF">
           <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7.5L4 15.5V12H1a1 1 0 0 1-1-1V1zm1 0v10h4v2l2-2h8V1H1zm7.5 3h2v1h-2v2h-1V5h-2V4h2V2h1v2zm2 5h-5V8h5v1z" />

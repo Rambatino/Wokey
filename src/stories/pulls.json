@@ -7,7 +7,7 @@
     "title": "Added link to campaigns",
     "subtitle": "Intellection/zappi.client",
     "url": "https://github.com/Intellection/zappi.client/pull/9828",
-    "state": "changesRequested",
+    "state": "requestChanges",
     "branch": "feature/STATS-302",
     "status": "success",
     "repo": "Intellection/zappi.client"
@@ -22,7 +22,7 @@
     "url": "https://github.com/Intellection/zappi.client/pull/9901",
     "state": "approved",
     "branch": "add_exports",
-    "status": "failed",
+    "status": "failure",
     "repo": "Intellection/zappi.client"
   },
   {
@@ -48,7 +48,7 @@
     "url": "https://github.com/Intellection/zappi.client/pull/9841",
     "state": "",
     "branch": "feature/ADPULSE-226",
-    "status": "failed",
+    "status": "failure",
     "repo": "Intellection/zappi.client"
   },
   {
@@ -74,7 +74,7 @@
     "url": "https://github.com/Intellection/zappistore.app/pull/5441",
     "state": "COMMENTED",
     "branch": "feature/ADPULSE-225",
-    "status": "failed",
+    "status": "failure",
     "repo": "Intellection/zappistore.app"
   }
 ]
