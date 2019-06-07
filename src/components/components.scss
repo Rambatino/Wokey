@@ -41,6 +41,7 @@
     .title {
       font-size: 13px;
       margin-left: 10px;
+      margin-right: 10px;
       max-width: 130px;
       font-weight: 300;
     }
@@ -48,9 +49,6 @@
 
   .cardSeparator {
     width: 1px;
-    margin-left: 10;
-    margin-top: 10;
-    margin-bottom: 10;
     background-color: #d8d8d8;
   }
 }
