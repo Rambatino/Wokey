@@ -31,6 +31,7 @@ export default class Board extends Component<Props> {
               key={state}
               style={{
                 width: '100%',
+                paddingLeft: '7px',
                 backgroundColor: i % 2 ? '#F8F8F8' : '#FFF',
               }}
             >
