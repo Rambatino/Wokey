@@ -55,9 +55,21 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 			repo := strings.Replace(i.GetRepositoryURL(), "https://api.github.com/repos/", "", -1)
 			split := strings.Split(repo, "/")
 
-			reviews, _, err := client.PullRequests.ListReviews(ctx, split[0], split[1], i.GetNumber(), nil)
-			pr, _, err := client.PullRequests.Get(ctx, split[0], split[1], i.GetNumber())
+			reviewsChan := make(chan []*github.PullRequestReview)
+			prChan := make(chan *github.PullRequest)
+
+			go func() {
+				rvs, _, _ := client.PullRequests.ListReviews(ctx, split[0], split[1], i.GetNumber(), nil)
+				reviewsChan <- rvs
+			}()
+			go func() {
+				pr, _, _ := client.PullRequests.Get(ctx, split[0], split[1], i.GetNumber())
+				prChan <- pr
+			}()
+			pr := <-prChan
 			statuses, _, err := client.Repositories.ListStatuses(ctx, split[0], split[1], pr.GetHead().GetSHA(), nil)
+
+			reviews := <-reviewsChan
 
 			if err != nil {
 				log.Println(err.Error())
