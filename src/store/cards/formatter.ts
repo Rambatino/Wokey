@@ -31,6 +31,6 @@ export const filterCards = (
       baseCard.linkedCards = linkedStore
       return baseCard
     }),
-    linkedCards: linkedCards,
+    linkedCards: linkedCards.filter((_, i) => !found[i]),
   }
 }
