@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import CardGroup from '../components/CardGroup'
+import Card from '../components/Card'
 import './containers.scss'
 
 import { BaseCard, LinkedCard } from '../store/cards/types'
@@ -15,9 +16,11 @@ type Props = {
 // all the cards are layed out
 export default class Board extends Component<Props> {
   render() {
+    console.log(this.props)
+    const allStates = this.getAllStates()
     return (
       <div className="Board">
-        {this.getAllStates().map((state, i) => (
+        {allStates.map((state, i) => (
           <div className="boardRow">
             <div
               className="statusTitle"
@@ -47,6 +50,35 @@ export default class Board extends Component<Props> {
             </div>
           </div>
         ))}
+        {this.props.data.linkedCards && (
+          <div className="boardRow">
+            <div
+              className="statusTitle"
+              style={{
+                backgroundColor: allStates.length % 2 ? '#F8F8F8' : '#FFF',
+              }}
+            >
+              <p> Pull Requests </p>
+            </div>
+            <div className="verticalLine" />
+            <div
+              className={'pullRequests'}
+              style={{
+                width: '100%',
+                paddingLeft: '7px',
+                backgroundColor: allStates.length % 2 ? '#F8F8F8' : '#FFF',
+              }}
+            >
+              {this.props.data.linkedCards.map((card, i) => (
+                <Card
+                  key={i}
+                  data={card}
+                  onClick={() => window.open(card.item.url)}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     )
   }
