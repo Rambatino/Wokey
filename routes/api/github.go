@@ -58,6 +58,9 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 			reviewsChan := make(chan []*github.PullRequestReview)
 			prChan := make(chan *github.PullRequest)
 
+			if i.GetNumber() == 9841 {
+				pp.Println("sadads")
+			}
 			go func() {
 				rvs, _, _ := client.PullRequests.ListReviews(ctx, split[0], split[1], i.GetNumber(), nil)
 				reviewsChan <- rvs
