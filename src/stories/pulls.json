@@ -46,7 +46,7 @@
     "title": "Feature/adpulse 226 - Adding pixel rules to the email and notifier too",
     "subtitle": "Intellection/zappi.client",
     "url": "https://github.com/Intellection/zappi.client/pull/9841",
-    "state": "",
+    "state": "conflicted",
     "branch": "feature/ADPULSE-226",
     "status": "failure",
     "repo": "Intellection/zappi.client"
@@ -59,7 +59,7 @@
     "title": "STATS-302 Created new Ad Pulse end point to return key metrics for ad pulse surveys",
     "subtitle": "Intellection/data-collector.app",
     "url": "https://github.com/Intellection/data-collector.app/pull/2379",
-    "state": "",
+    "state": "conflicted",
     "branch": "feature/ADPULSE-225",
     "status": "success",
     "repo": "Intellection/data-collector.app"
@@ -72,7 +72,7 @@
     "title": "Added a way to fetch responses per beacon for the admin table",
     "subtitle": "Intellection/zappistore.app",
     "url": "https://github.com/Intellection/zappistore.app/pull/5441",
-    "state": "COMMENTED",
+    "state": "commented",
     "branch": "feature/ADPULSE-225",
     "status": "failure",
     "repo": "Intellection/zappistore.app"

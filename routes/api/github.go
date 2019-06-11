@@ -11,7 +11,6 @@ import (
 	"sync"
 
 	"github.com/google/go-github/github"
-	"github.com/k0kubun/pp"
 	"golang.org/x/oauth2"
 )
 
@@ -58,15 +57,17 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 			reviewsChan := make(chan []*github.PullRequestReview)
 			prChan := make(chan *github.PullRequest)
 
-			if i.GetNumber() == 9841 {
-				pp.Println("sadads")
-			}
 			go func() {
 				rvs, _, _ := client.PullRequests.ListReviews(ctx, split[0], split[1], i.GetNumber(), nil)
 				reviewsChan <- rvs
 			}()
+			state := ""
 			go func() {
 				pr, _, _ := client.PullRequests.Get(ctx, split[0], split[1], i.GetNumber())
+				if pr.GetMergeableState() == "dirty" {
+					state = formatStatus("CONFLICTED", state)
+				}
+
 				prChan <- pr
 			}()
 			pr := <-prChan
@@ -78,10 +79,9 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 				log.Println(err.Error())
 				return
 			}
-			state := ""
+
 			for _, rev := range reviews {
 				state = formatStatus(rev.GetState(), state)
-				pp.Println(state)
 			}
 
 			store = append(store, GithubResp{
@@ -107,15 +107,17 @@ func formatStatus(newStatus, previousStatus string) string {
 	}
 
 	statusMap := map[string]string{
+		"CONFLICTED":      "conflicted",
 		"COMMENTED":       "commented",
 		"REQUEST_CHANGES": "requestChanges",
 		"APPROVED":        "approved",
 	}
 
 	weightMap := map[string]int{
-		"commented":      0,
-		"requestChanges": 1,
-		"approved":       2,
+		"conflicted":     0,
+		"commented":      1,
+		"requestChanges": 2,
+		"approved":       3,
 	}
 
 	mappedStatus := statusMap[newStatus]

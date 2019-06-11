@@ -11,6 +11,7 @@ export default class Card extends Component<Props> {
   green = '#28a745'
   orange = '#ffac45'
   red = '#cb2431'
+  grey = '#6a737d'
 
   statusSymbol: {
     [key: string]: {
@@ -52,6 +53,13 @@ export default class Card extends Component<Props> {
       <div className="stateSymbol" style={{ backgroundColor: this.red }}>
         <svg className="rejectedSVGCircle" width="16" height="16" fill="#FFF">
           <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7.5L4 15.5V12H1a1 1 0 0 1-1-1V1zm1 0v10h4v2l2-2h8V1H1zm7.5 3h2v1h-2v2h-1V5h-2V4h2V2h1v2zm2 5h-5V8h5v1z" />
+        </svg>
+      </div>
+    ),
+    conflicted: (
+      <div className="stateSymbol" style={{ backgroundColor: this.grey }}>
+        <svg className="conflictedSVGCircle" width="16" height="16" fill="#FFF">
+          <path d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z" />
         </svg>
       </div>
     ),
