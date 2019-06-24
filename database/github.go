@@ -1,10 +1,8 @@
-package api
+package database
 
 import (
 	"context"
-	"encoding/json"
 	"log"
-	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -14,22 +12,18 @@ import (
 	"golang.org/x/oauth2"
 )
 
-type GithubResp struct {
-	ID           string `json:"id"`
-	Desc         string `json:"desc"`
-	DescHtml     string `json:"descHtml"`
-	DescMarkdown string `json:"descMarkdown"`
-	Title        string `json:"title"`
-	SubTitle     string `json:"subtitle"`
-	Url          string `json:"url"`
-	State        string `json:"state"` // set by users
-	Branch       string `json:"branch"`
-	Status       string `json:"status"` // set by CI
-	Repo         string `json:"repo"`
+type GithubQuerier interface {
+	getGithubPullRequests() []pullRequest
 }
 
-func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
+type githubQuery struct {
+}
 
+func NewGithubQuerier() GithubQuerier {
+	return &githubQuery{}
+}
+
+func (g *githubQuery) getGithubPullRequests() []pullRequest {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
@@ -41,10 +35,10 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 	prs, _, err := client.Search.Issues(ctx, "author:"+os.Getenv("GITHUB_USER")+" type:pr state:open", nil) // &github.SearchOptions{ListOptions: github.ListOptions{PerPage: 100}}
 	if err != nil {
 		log.Println(err.Error())
-		return
+		return nil
 	}
 
-	store := []GithubResp{}
+	store := []pullRequest{}
 
 	var wg sync.WaitGroup
 	for _, issue := range prs.Issues {
@@ -84,21 +78,20 @@ func AllCurrentPullRequests(w http.ResponseWriter, r *http.Request) {
 				state = formatStatus(rev.GetState(), state)
 			}
 
-			store = append(store, GithubResp{
-				ID:           strconv.Itoa(int(i.GetID())),
-				DescMarkdown: i.GetBody(),
-				Title:        i.GetTitle(),
-				SubTitle:     repo,
-				State:        state,
-				Url:          pr.GetHTMLURL(),
-				Branch:       pr.GetHead().GetRef(),
-				Status:       statuses[0].GetState(),
-				Repo:         repo,
+			store = append(store, pullRequest{
+				ID:            strconv.Itoa(int(i.GetID())),
+				Title:         i.GetTitle(),
+				ApprovalState: state,
+				Link:          pr.GetHTMLURL(),
+				Branch:        pr.GetHead().GetRef(),
+				CIStatus:      statuses[0].GetState(),
+				Repo:          repo,
+				Number:        i.GetNumber(),
 			})
 		}(issue, &wg)
 	}
 	wg.Wait()
-	json.NewEncoder(w).Encode(store)
+	return store
 }
 
 func formatStatus(newStatus, previousStatus string) string {
