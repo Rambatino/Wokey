@@ -23,6 +23,17 @@ func NewGithubQuerier() GithubQuerier {
 	return &githubQuery{}
 }
 
+var (
+	CHANGES_REQUESTED_STATE = "CHANGES_REQUESTED"
+	APPROVED_STATE          = "APPROVED"
+	COMMENTED_STATE         = "COMMENTED"
+	CONFLICTED_STATE        = "CONFLICTED"
+
+	CI_FAILED_STATE    = "FAILED"
+	CI_SUCCEEDED_STATE = "SUCCEEDED"
+	CI_RUNNING_STATE   = "RUNNING"
+)
+
 func (g *githubQuery) getGithubPullRequests() []pullRequest {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
@@ -59,7 +70,7 @@ func (g *githubQuery) getGithubPullRequests() []pullRequest {
 			go func() {
 				pr, _, _ := client.PullRequests.Get(ctx, split[0], split[1], i.GetNumber())
 				if pr.GetMergeableState() == "dirty" {
-					state = formatStatus("CONFLICTED", state)
+					state = formatStatus(CONFLICTED_STATE, state)
 				}
 
 				prChan <- pr
@@ -99,27 +110,19 @@ func formatStatus(newStatus, previousStatus string) string {
 		return ""
 	}
 
-	statusMap := map[string]string{
-		"CONFLICTED":      "conflicted",
-		"COMMENTED":       "commented",
-		"REQUEST_CHANGES": "requestChanges",
-		"APPROVED":        "approved",
-	}
-
 	weightMap := map[string]int{
-		"conflicted":     0,
-		"commented":      1,
-		"requestChanges": 2,
-		"approved":       3,
+		COMMENTED_STATE:         1,
+		CHANGES_REQUESTED_STATE: 2,
+		APPROVED_STATE:          3,
+		CONFLICTED_STATE:        4,
 	}
 
-	mappedStatus := statusMap[newStatus]
-	if previousStatus == "" || mappedStatus == previousStatus {
-		return mappedStatus
+	if previousStatus == "" || newStatus == previousStatus {
+		return newStatus
 	}
 
-	if weightMap[mappedStatus] > weightMap[previousStatus] {
-		return mappedStatus
+	if weightMap[newStatus] > weightMap[previousStatus] {
+		return newStatus
 	}
 
 	return previousStatus
