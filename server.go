@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"wokey/database"
 	"wokey/routes/callback"
 	"wokey/routes/home"
 	"wokey/routes/login"
@@ -36,6 +35,12 @@ func StartServer() {
 	}))
 	http.Handle("/", handlers.CombinedLoggingHandler(os.Stdout, r))
 
+	hub := newHub()
+	go hub.run()
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		serveWs(hub, w, r)
+	})
+
 	// data things
 	// r.HandleFunc("/issues", api.AllIssuesHandler)
 	// r.HandleFunc("/pulls", api.AllCurrentPullRequests)
@@ -43,7 +48,7 @@ func StartServer() {
 	// set up database manager
 	// manager := database.NewManager()
 	// manager.AddObserver("hi")
-	database.CheckForState("")
+	// database.CheckForState("")
 
 	log.Print("Server listening on http://localhost:1234/")
 	http.ListenAndServe("0.0.0.0:1234", nil)

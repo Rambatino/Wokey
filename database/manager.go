@@ -1,50 +1,22 @@
 package database
 
-import (
-	"time"
-)
-
-const MAX_QUERIERS = 100
-
-type Manager interface {
-	AddObserver(id string)
-	RemoveObserver(id string)
+type Manager struct {
+	key   string
+	state state
 }
 
-type manager struct {
-	observers map[string]*observer
+func FindOrNew(bucketID string) state {
+	return state{githubQuery: &githubQuery{}, jiraQuery: &jiraQuery{}}
 }
 
-func NewManager() Manager {
-	return manager{map[string]*observer{}}
+func (s *state) Store(bucketID string) bool {
+	return false
 }
 
-func (m manager) AddObserver(id string) {
-	o := NewObserver(id)
-	m.observers[id] = &o
+func NewManager(id string) Manager {
+	return Manager{key: id}
 }
 
-func (m manager) RemoveObserver(id string) {
-
-}
-
-type observer struct {
-	key          string
-	shouldCancel <-chan bool
-}
-
-func NewObserver(id string) observer {
-	o := observer{id, make(chan bool)}
-	go o.observe()
-	return o
-}
-
-func (o *observer) observe() {
-	for {
-		select {
-		case <-time.After(60 * time.Second):
-			// trigger check
-		case <-o.shouldCancel:
-		}
-	}
+func (o *Manager) Observe() (state, int) {
+	return CheckForStateChange(FindOrNew(""), "hello")
 }

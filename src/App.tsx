@@ -17,6 +17,29 @@ class App extends Component<AppProps> {
   componentDidMount() {
     this.props.fetchPulls()
     this.props.fetchIssues()
+
+    const conn = new WebSocket('ws://' + document.location.host + '/ws')
+
+    conn.onopen = () => {
+      var item = document.createElement('div')
+      item.innerHTML = '<b>OPENED</b>'
+      document.body.appendChild(item)
+    }
+
+    conn.onclose = () => {
+      var item = document.createElement('div')
+      item.innerHTML = '<b>Connection closed.</b>'
+      document.body.appendChild(item)
+    }
+
+    conn.onmessage = evt => {
+      var messages = evt.data.split('\n')
+      for (var i = 0; i < messages.length; i++) {
+        var item = document.createElement('div')
+        item.innerText = messages[i]
+        document.body.appendChild(item)
+      }
+    }
   }
 
   render() {

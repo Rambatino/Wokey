@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -23,6 +24,10 @@ type pullRequest struct {
 	Comments []comment
 }
 
+func (p *pullRequest) label() string {
+	return fmt.Sprintf("#%v '%s' [%s]", p.Number, p.Title, p.Repo)
+}
+
 type issue struct {
 	ID    string `json:"id"`
 	Key   string `json:"key"`
@@ -30,7 +35,12 @@ type issue struct {
 	Link  string `json:"link"`
 	State string `json:"state"`
 
-	Comments []comment
+	PullRequests []pullRequest `json:"pullRequests"`
+	Comments     []comment
+}
+
+func (i *issue) label() string {
+	return fmt.Sprintf("'%s' [%s]", i.Title, i.Key)
 }
 
 type state struct {
@@ -38,7 +48,7 @@ type state struct {
 	jiraQuery    JiraQuerier
 	Issues       []issue
 	PullRequests []pullRequest
-	Change       []stateChange
+	Changes      []stateChange
 }
 
 type stateChange struct {
@@ -52,54 +62,51 @@ type stateChange struct {
 }
 
 var (
-	// NEW_ISSUE_ASSIGNED   = "NEW_ISSUE_ASSIGNED"
-	// newIssueAssignedText = func(issueName, issueId string) string {
-	// 	return fmt.Sprintf("%s [%s] has been assigned to you", issueName, issueId)
-	// }
+	NEW_ISSUE_ASSIGNED   = "NEW_ISSUE_ASSIGNED"
+	newIssueAssignedText = func(issue issue) string {
+		return fmt.Sprintf("%s has been assigned to you", issue.label())
+	}
 
 	NEW_ISSUE_COMMENT   = "NEW_ISSUE_COMMENT"
-	newIssueCommentText = func(issueName, issueKey string, count int) string {
-		return fmt.Sprintf("'%s' [%s] has %v new comment(s)", issueName, issueKey, count)
+	newIssueCommentText = func(issue issue, count int) string {
+		return fmt.Sprintf("%s has %v new comment(s)", issue.label(), count)
 	}
 
 	NEW_PULL_REQUEST_COMMENT  = "NEW_PULL_REQUEST_COMMENT"
-	newPullRequestCommentText = func(prName string, prNumber int, repo string, count int) string {
-		return fmt.Sprintf("#%v '%s' [%s] has %v new comment(s)", prNumber, prName, repo, count)
+	newPullRequestCommentText = func(pr pullRequest, count int) string {
+		return fmt.Sprintf("%s has %v new comment(s)", pr.label(), count)
 	}
 
 	COLUMN_CHANGE    = "COLUMN_CHANGE"
 	columnChangeText = func(issue issue, from, to string) string {
-		return fmt.Sprintf("'%s' [%s] has been moved from '%s' to '%s'", issue.Title, issue.Key, from, to)
+		return fmt.Sprintf("%s has been moved from '%s' to '%s'", issue.label(), from, to)
 	}
 
 	APPROVAL_CHANGE    = "APPROVAL_CHANGE"
 	approvalChangeText = func(pr pullRequest) string {
-		return fmt.Sprintf("#%v '%s' [%s] has been approved", pr.Number, pr.Title, pr.Repo)
+		return fmt.Sprintf("%s has been approved", pr.label())
 	}
 
 	CHANGES_REQUESTED    = "CHANGES_REQUESTED"
 	changesRequestedText = func(pr pullRequest) string {
-		return fmt.Sprintf("#%v '%s' [%s] has had changes requested", pr.Number, pr.Title, pr.Repo)
+		return fmt.Sprintf("%s has had changes requested", pr.label())
 	}
 
 	CI_FAILED    = "CI_FAILED"
 	ciFailedText = func(pr pullRequest) string {
-		return fmt.Sprintf("#%v '%s' [%s] has failed", pr.Number, pr.Title, pr.Repo)
+		return fmt.Sprintf("%s has failed", pr.label())
 	}
 
 	CI_SUCCEEDED    = "CI_SUCCEEDED"
 	ciSucceededText = func(pr pullRequest) string {
-		return fmt.Sprintf("#%v '%s' [%s] has succeeded", pr.Number, pr.Title, pr.Repo)
+		return fmt.Sprintf("%s has succeeded", pr.label())
+	}
+
+	NEW_PULL_REQUEST_ASSIGNED_TO_ISSUE = "NEW_PULL_REQUEST_ASSIGNED_TO_ISSUE"
+	newPullRequestAssignedToIssueText  = func(pr pullRequest, issue issue) string {
+		return fmt.Sprintf("%s has been assigned to %s", pr.label(), issue.label())
 	}
 )
-
-func FindOrNew(bucketID string) *state {
-	return &state{githubQuery: &githubQuery{}, jiraQuery: &jiraQuery{}}
-}
-
-func (s *state) Store(bucketID string) bool {
-	return false
-}
 
 func CheckForStateChange(state state, bucketID string) (newState state, changeCount int) {
 	// get previous state, or return empty state
@@ -123,15 +130,16 @@ func CheckForStateChange(state state, bucketID string) (newState state, changeCo
 	prs := <-prsChan
 
 	for _, newIssue := range issues {
+		found := false
 		for _, initialIssue := range state.Issues {
 			if newIssue.ID == initialIssue.ID {
-
+				found = true
 				// check if any added comments
 				if len(newIssue.Comments) > len(initialIssue.Comments) {
 					newStateChangeStore = append(newStateChangeStore, stateChange{
 						CreatedAt: time.Now(),
 						Type:      NEW_ISSUE_COMMENT,
-						Message:   newIssueCommentText(newIssue.Title, newIssue.Key, len(newIssue.Comments)-len(initialIssue.Comments)),
+						Message:   newIssueCommentText(newIssue, len(newIssue.Comments)-len(initialIssue.Comments)),
 					})
 				}
 
@@ -146,63 +154,110 @@ func CheckForStateChange(state state, bucketID string) (newState state, changeCo
 
 			}
 		}
+		if !found {
+			newStateChangeStore = append(newStateChangeStore, stateChange{
+				CreatedAt: time.Now(),
+				Type:      NEW_ISSUE_ASSIGNED,
+				Message:   newIssueAssignedText(newIssue),
+			})
+		}
 	}
 
 	for _, newPullRequest := range prs {
+		for _, initialIssue := range state.Issues {
+			for _, initialPullRequest := range initialIssue.PullRequests {
+				if newPullRequest.ID == initialPullRequest.ID {
+					newStateChangeStore = append(newStateChangeStore, checkPullRequests(initialPullRequest, newPullRequest)...)
+				}
+			}
+		}
 		for _, initialPullRequest := range state.PullRequests {
 			if newPullRequest.ID == initialPullRequest.ID {
-
-				// check if comment number changed
-				if len(newPullRequest.Comments) > len(initialPullRequest.Comments) {
-					newStateChange := stateChange{
-						CreatedAt: time.Now(),
-						Type:      NEW_PULL_REQUEST_COMMENT,
-						Message:   newPullRequestCommentText(newPullRequest.Title, newPullRequest.Number, newPullRequest.Repo, len(newPullRequest.Comments)-len(initialPullRequest.Comments)),
-					}
-					newStateChangeStore = append(newStateChangeStore, newStateChange)
-				}
-
-				// check if state has changed
-				if newPullRequest.ApprovalState != initialPullRequest.ApprovalState {
-					if newPullRequest.ApprovalState == APPROVED_STATE {
-						newStateChangeStore = append(newStateChangeStore, stateChange{
-							CreatedAt: time.Now(),
-							Type:      APPROVAL_CHANGE,
-							Message:   approvalChangeText(newPullRequest),
-						})
-					}
-					if newPullRequest.ApprovalState == CHANGES_REQUESTED_STATE {
-						newStateChangeStore = append(newStateChangeStore, stateChange{
-							CreatedAt: time.Now(),
-							Type:      CHANGES_REQUESTED,
-							Message:   changesRequestedText(newPullRequest),
-						})
-					}
-				}
-				if newPullRequest.CIStatus != initialPullRequest.CIStatus {
-					if newPullRequest.CIStatus == CI_FAILED_STATE {
-						newStateChangeStore = append(newStateChangeStore, stateChange{
-							CreatedAt: time.Now(),
-							Type:      CI_FAILED,
-							Message:   ciFailedText(newPullRequest),
-						})
-					}
-					if newPullRequest.CIStatus == CI_SUCCEEDED_STATE {
-						newStateChangeStore = append(newStateChangeStore, stateChange{
-							CreatedAt: time.Now(),
-							Type:      CI_SUCCEEDED,
-							Message:   ciSucceededText(newPullRequest),
-						})
-					}
-				}
+				newStateChangeStore = append(newStateChangeStore, checkPullRequests(initialPullRequest, newPullRequest)...)
 			}
 		}
 	}
 
-	state.Change = append(state.Change, newStateChangeStore...)
-	state.Issues = issues
-	state.PullRequests = prs
-
 	// store state
-	return state, len(newStateChangeStore)
+	return formatState(issues, prs, append(state.Changes, newStateChangeStore...)), len(newStateChangeStore)
+}
+
+func formatState(issues []issue, prs []pullRequest, stateChange []stateChange) state {
+	lonePullRequests := []pullRequest{}
+	issuesCopy := append(issues[:0:0], issues...)
+
+	for _, pr := range prs {
+		found := false
+		for i, issueVar := range issues {
+			if strings.Contains(pr.Branch, issueVar.Key) || strings.Contains(pr.Title, issueVar.Key) {
+				var is issue
+				if len(issuesCopy) > i {
+					is = issuesCopy[i]
+				} else {
+					is = issueVar
+				}
+				is.PullRequests = append(is.PullRequests, pr)
+				issuesCopy[i] = is
+				found = true
+			}
+		}
+		if !found {
+			lonePullRequests = append(lonePullRequests, pr)
+		}
+	}
+
+	return state{
+		Changes:      stateChange,
+		Issues:       issuesCopy,
+		PullRequests: lonePullRequests,
+	}
+}
+
+func checkPullRequests(initialPullRequest, newPullRequest pullRequest) []stateChange {
+	newStateChangeStore := []stateChange{}
+
+	// check if comment number changed
+	if len(newPullRequest.Comments) > len(initialPullRequest.Comments) {
+		newStateChange := stateChange{
+			CreatedAt: time.Now(),
+			Type:      NEW_PULL_REQUEST_COMMENT,
+			Message:   newPullRequestCommentText(newPullRequest, len(newPullRequest.Comments)-len(initialPullRequest.Comments)),
+		}
+		newStateChangeStore = append(newStateChangeStore, newStateChange)
+	}
+
+	// check if state has changed
+	if newPullRequest.ApprovalState != initialPullRequest.ApprovalState {
+		if newPullRequest.ApprovalState == APPROVED_STATE {
+			newStateChangeStore = append(newStateChangeStore, stateChange{
+				CreatedAt: time.Now(),
+				Type:      APPROVAL_CHANGE,
+				Message:   approvalChangeText(newPullRequest),
+			})
+		}
+		if newPullRequest.ApprovalState == CHANGES_REQUESTED_STATE {
+			newStateChangeStore = append(newStateChangeStore, stateChange{
+				CreatedAt: time.Now(),
+				Type:      CHANGES_REQUESTED,
+				Message:   changesRequestedText(newPullRequest),
+			})
+		}
+	}
+	if newPullRequest.CIStatus != initialPullRequest.CIStatus {
+		if newPullRequest.CIStatus == CI_FAILED_STATE {
+			newStateChangeStore = append(newStateChangeStore, stateChange{
+				CreatedAt: time.Now(),
+				Type:      CI_FAILED,
+				Message:   ciFailedText(newPullRequest),
+			})
+		}
+		if newPullRequest.CIStatus == CI_SUCCEEDED_STATE {
+			newStateChangeStore = append(newStateChangeStore, stateChange{
+				CreatedAt: time.Now(),
+				Type:      CI_SUCCEEDED,
+				Message:   ciSucceededText(newPullRequest),
+			})
+		}
+	}
+	return newStateChangeStore
 }
