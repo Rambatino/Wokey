@@ -52,7 +52,7 @@ export default class Board extends Component<Props> {
             </div>
           </div>
         ))}
-        {this.props.data.linkedCards && (
+        {this.props.data.linkedCards.length > 0 && (
           <div className="boardRow">
             <div
               className="statusTitle"
