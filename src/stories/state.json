@@ -1,0 +1,214 @@
+{
+  "Issues": [
+    {
+      "id": "77512",
+      "key": "ADPULSE-225",
+      "title": "Monitoring impressions and respondents per pixel and by campaign",
+      "link": "https://zigroup.atlassian.net/browse/ADPULSE-225",
+      "state": "Ready for Test",
+      "pullRequests": [
+        {
+          "id": "446926830",
+          "number": 5441,
+          "approvalState": "CONFLICTED",
+          "ciStatus": "success",
+          "title": "Added a way to fetch responses per beacon for the admin table",
+          "link": "https://github.com/Intellection/zappistore.app/pull/5441",
+          "branch": "feature/ADPULSE-225",
+          "repo": "Intellection/zappistore.app",
+          "comments": null
+        },
+        {
+          "id": "446908482",
+          "number": 2379,
+          "approvalState": "COMMENTED",
+          "ciStatus": "success",
+          "title": "Created new Ad Pulse end point to return key metrics for ad pulse surveys",
+          "link": "https://github.com/Intellection/data-collector.app/pull/2379",
+          "branch": "feature/ADPULSE-225",
+          "repo": "Intellection/data-collector.app",
+          "comments": null
+        }
+      ],
+      "comments": null
+    },
+    {
+      "id": "77513",
+      "key": "ADPULSE-226",
+      "title": "Automated insights part 2 (pixel insights)",
+      "link": "https://zigroup.atlassian.net/browse/ADPULSE-226",
+      "state": "Ready for Test",
+      "pullRequests": [
+        {
+          "id": "459677013",
+          "number": 5535,
+          "approvalState": "APPROVED",
+          "ciStatus": "success",
+          "title": "Added beacon_insights to the mailer",
+          "link": "https://github.com/Intellection/zappistore.app/pull/5535",
+          "branch": "feature/ADPULSE-226",
+          "repo": "Intellection/zappistore.app",
+          "comments": null
+        },
+        {
+          "id": "449045905",
+          "number": 9841,
+          "approvalState": "APPROVED",
+          "ciStatus": "success",
+          "title": "Feature/adpulse 226 - Adding pixel rules to the email and notifier too",
+          "link": "https://github.com/Intellection/zappi.client/pull/9841",
+          "branch": "feature/ADPULSE-226",
+          "repo": "Intellection/zappi.client",
+          "comments": null
+        }
+      ],
+      "comments": null
+    },
+    {
+      "id": "77958",
+      "key": "ADPULSE-233",
+      "title": "Reports can populate as normal with in-app impressions captured in respondent data",
+      "link": "https://zigroup.atlassian.net/browse/ADPULSE-233",
+      "state": "To Do",
+      "pullRequests": null,
+      "comments": null
+    },
+    {
+      "id": "77418",
+      "key": "ADPULSE-224",
+      "title": "Enable chart export in PDF and PPT",
+      "link": "https://zigroup.atlassian.net/browse/ADPULSE-224",
+      "state": "Blocked (internal)",
+      "pullRequests": [
+        {
+          "id": "452246264",
+          "number": 9901,
+          "approvalState": "",
+          "ciStatus": "success",
+          "title": "[ADPULSE-224] Add exports to brand impact page",
+          "link": "https://github.com/Intellection/zappi.client/pull/9901",
+          "branch": "add_exports",
+          "repo": "Intellection/zappi.client",
+          "comments": null
+        }
+      ],
+      "comments": null
+    },
+    {
+      "id": "53105",
+      "key": "DS-93",
+      "title": "Creative Video Expertise Rules",
+      "link": "https://zigroup.atlassian.net/browse/DS-93",
+      "state": "Existing solution",
+      "pullRequests": null,
+      "comments": null
+    },
+    {
+      "id": "34236",
+      "key": "ARCHIVE-778",
+      "title": "Zappi Teams have key metrics to better understand the business",
+      "link": "https://zigroup.atlassian.net/browse/ARCHIVE-778",
+      "state": "Evaluation",
+      "pullRequests": null,
+      "comments": null
+    },
+    {
+      "id": "58939",
+      "key": "IT-37",
+      "title": "Findings should display the correct Measure",
+      "link": "https://zigroup.atlassian.net/browse/IT-37",
+      "state": "Existing solution",
+      "pullRequests": null,
+      "comments": null
+    }
+  ],
+  "PullRequests": [
+    {
+      "id": "446863199",
+      "number": 9828,
+      "approvalState": "CONFLICTED",
+      "ciStatus": "success",
+      "title": "Added link to campaigns",
+      "link": "https://github.com/Intellection/zappi.client/pull/9828",
+      "branch": "feature/ADPULSE-219",
+      "repo": "Intellection/zappi.client",
+      "comments": null
+    },
+    {
+      "id": "454489037",
+      "number": 9925,
+      "approvalState": "COMMENTED",
+      "ciStatus": "success",
+      "title": "Fixed campaign name",
+      "link": "https://github.com/Intellection/zappi.client/pull/9925",
+      "branch": "fix_campaign_name",
+      "repo": "Intellection/zappi.client",
+      "comments": null
+    }
+  ],
+  "Changes": [
+    {
+      "Type": "NEW_ISSUE_ASSIGNED",
+      "Read": false,
+      "Message": "'Monitoring impressions and respondents per pixel and by campaign' [ADPULSE-225] has been assigned to you",
+      "PullRequestID": "",
+      "IssueID": "",
+      "CreatedAt": "2019-06-26T09:53:24.257279+08:00",
+      "SeenAt": "0001-01-01T00:00:00Z"
+    },
+    {
+      "Type": "NEW_ISSUE_ASSIGNED",
+      "Read": false,
+      "Message": "'Automated insights part 2 (pixel insights)' [ADPULSE-226] has been assigned to you",
+      "PullRequestID": "",
+      "IssueID": "",
+      "CreatedAt": "2019-06-26T09:53:24.257285+08:00",
+      "SeenAt": "0001-01-01T00:00:00Z"
+    },
+    {
+      "Type": "NEW_ISSUE_ASSIGNED",
+      "Read": false,
+      "Message": "'Reports can populate as normal with in-app impressions captured in respondent data' [ADPULSE-233] has been assigned to you",
+      "PullRequestID": "",
+      "IssueID": "",
+      "CreatedAt": "2019-06-26T09:53:24.257287+08:00",
+      "SeenAt": "0001-01-01T00:00:00Z"
+    },
+    {
+      "Type": "NEW_ISSUE_ASSIGNED",
+      "Read": false,
+      "Message": "'Enable chart export in PDF and PPT' [ADPULSE-224] has been assigned to you",
+      "PullRequestID": "",
+      "IssueID": "",
+      "CreatedAt": "2019-06-26T09:53:24.257288+08:00",
+      "SeenAt": "0001-01-01T00:00:00Z"
+    },
+    {
+      "Type": "NEW_ISSUE_ASSIGNED",
+      "Read": false,
+      "Message": "'Creative Video Expertise Rules' [DS-93] has been assigned to you",
+      "PullRequestID": "",
+      "IssueID": "",
+      "CreatedAt": "2019-06-26T09:53:24.257289+08:00",
+      "SeenAt": "0001-01-01T00:00:00Z"
+    },
+    {
+      "Type": "NEW_ISSUE_ASSIGNED",
+      "Read": false,
+      "Message": "'Zappi Teams have key metrics to better understand the business' [ARCHIVE-778] has been assigned to you",
+      "PullRequestID": "",
+      "IssueID": "",
+      "CreatedAt": "2019-06-26T09:53:24.257291+08:00",
+      "SeenAt": "0001-01-01T00:00:00Z"
+    },
+    {
+      "Type": "NEW_ISSUE_ASSIGNED",
+      "Read": false,
+      "Message": "'Findings should display the correct Measure' [IT-37] has been assigned to you",
+      "PullRequestID": "",
+      "IssueID": "",
+      "CreatedAt": "2019-06-26T09:53:24.257291+08:00",
+      "SeenAt": "0001-01-01T00:00:00Z"
+    }
+  ]
+}

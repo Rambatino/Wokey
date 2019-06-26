@@ -13,9 +13,7 @@ import (
 
 	database "wokey/database"
 
-	_ "github.com/Rambatino/gooff"
 	"github.com/gorilla/websocket"
-	"github.com/k0kubun/pp"
 )
 
 const (
@@ -67,7 +65,13 @@ func (c *Client) writePump() {
 		ticker.Stop()
 		c.conn.Close()
 	}()
-	pp.Println("Setting up")
+	go func() {
+		if state, hasChanged := c.manager.Observe(); hasChanged > 0 {
+			reqBodyBytes := new(bytes.Buffer)
+			json.NewEncoder(reqBodyBytes).Encode(state)
+			c.send <- reqBodyBytes.Bytes()
+		}
+	}()
 	for {
 		select {
 		case message, ok := <-c.send:
@@ -94,10 +98,8 @@ func (c *Client) writePump() {
 			if err := w.Close(); err != nil {
 				return
 			}
-		case <-time.After(20 * time.Second):
-			pp.Println("TIme after 60")
+		case <-time.After(30 * time.Second):
 			if state, hasChanged := c.manager.Observe(); hasChanged > 0 {
-				pp.Println("Here")
 				reqBodyBytes := new(bytes.Buffer)
 				json.NewEncoder(reqBodyBytes).Encode(state)
 				c.send <- reqBodyBytes.Bytes()

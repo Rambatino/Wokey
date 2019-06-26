@@ -35,28 +35,28 @@ export default class Card extends Component<Props> {
     },
   }
   stateSymbol: { [key: string]: JSX.Element | undefined } = {
-    approved: (
+    APPROVED: (
       <div className="stateSymbol" style={{ backgroundColor: this.green }}>
         <svg className="approvedSVGCircle" width="12" height="16" fill="#FFF">
           <path d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5L12 5z" />
         </svg>
       </div>
     ),
-    commented: (
+    COMMENTED: (
       <div className="stateSymbol" style={{ backgroundColor: this.orange }}>
         <svg className="commentedSVGCircle" width="16" height="16" fill="#FFF">
           <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7.5L4 15.5V12H1a1 1 0 0 1-1-1V1zm1 0v10h4v2l2-2h8V1H1zm7.5" />
         </svg>
       </div>
     ),
-    requestChanges: (
+    CHANGES_REQUESTED: (
       <div className="stateSymbol" style={{ backgroundColor: this.red }}>
         <svg className="rejectedSVGCircle" width="16" height="16" fill="#FFF">
           <path d="M0 1a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7.5L4 15.5V12H1a1 1 0 0 1-1-1V1zm1 0v10h4v2l2-2h8V1H1zm7.5 3h2v1h-2v2h-1V5h-2V4h2V2h1v2zm2 5h-5V8h5v1z" />
         </svg>
       </div>
     ),
-    conflicted: (
+    CONFLICTED: (
       <div className="stateSymbol" style={{ backgroundColor: this.grey }}>
         <svg className="conflictedSVGCircle" width="16" height="16" fill="#FFF">
           <path d="M8.893 1.5c-.183-.31-.52-.5-.887-.5s-.703.19-.886.5L.138 13.499a.98.98 0 0 0 0 1.001c.193.31.53.501.886.501h13.964c.367 0 .704-.19.877-.5a1.03 1.03 0 0 0 .01-1.002L8.893 1.5zm.133 11.497H6.987v-2.003h2.039v2.003zm0-3.004H6.987V5.987h2.039v4.006z" />
@@ -68,17 +68,14 @@ export default class Card extends Component<Props> {
   render() {
     return (
       <div className="Card" onClick={this.props.onClick}>
-        {this.stateSymbol[this.props.data.item.state]}
+        {this.stateSymbol[this.props.data.approvalState]}
         <div className="title">
-          {this.formatTitle(
-            this.props.data.item.title,
-            this.props.data.item.url
-          )}
+          {this.formatTitle(this.props.data.title, this.props.data.link)}
         </div>
-        <div className="branch">{this.props.data.item.repo}</div>
+        <div className="branch">{this.props.data.repo}</div>
         {this.svg(
-          (this.statusSymbol[this.props.data.item.status!] || {}).colour,
-          (this.statusSymbol[this.props.data.item.status!] || {}).path
+          (this.statusSymbol[this.props.data.ciStatus] || {}).colour,
+          (this.statusSymbol[this.props.data.ciStatus] || {}).path
         )}
       </div>
     )

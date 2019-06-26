@@ -2,26 +2,21 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 
 import Board from '../containers/Board'
-import issues from './issues.json'
-import pulls from './pulls.json'
-import { ArcherContainer } from 'react-archer'
+import state from './state.json'
 import CardGroup from '../components/CardGroup'
-import { filterCards } from '../store/cards/formatter'
-import { BaseCard, LinkedCard } from '../store/cards/types'
 import Card from '../components/Card'
+import { parseJSON } from '../store/cards/reducer'
 
-const spaceData = filterCards(
-  issues.map(i => ({ item: i } as BaseCard)),
-  pulls.map(i => ({ item: i } as LinkedCard))
-)
-storiesOf('New Workspace', module)
+const stateData = parseJSON(state)
+
+storiesOf('New Workstate', module)
   .add('Card', () => (
-    <Card data={spaceData.baseCards[0].linkedCards[0]} onClick={() => {}} />
+    <Card data={stateData.baseCards[0].linkedCards[0]} onClick={() => {}} />
   ))
   .add('Card Group Empty', () => (
-    <CardGroup data={spaceData.baseCards[5]} onClick={() => {}} />
+    <CardGroup data={stateData.baseCards[5]} onClick={() => {}} />
   ))
   .add('Card Group', () => (
-    <CardGroup data={spaceData.baseCards[0]} onClick={() => {}} />
+    <CardGroup data={stateData.baseCards[0]} onClick={() => {}} />
   ))
-  .add('Board', () => <Board data={spaceData} />)
+  .add('Board', () => <Board data={stateData} />)

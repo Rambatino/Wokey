@@ -16,7 +16,9 @@ type Props = {
 // all the cards are layed out
 export default class Board extends Component<Props> {
   render() {
-    console.log(this.props)
+    if (this.props.data.baseCards.length == 0) {
+      return null
+    }
     const allStates = this.getAllStates()
     return (
       <div className="Board">
@@ -39,12 +41,12 @@ export default class Board extends Component<Props> {
               }}
             >
               {this.props.data.baseCards
-                .filter(card => card.item.state === state)
+                .filter(card => card.state === state)
                 .map((card, i) => (
                   <CardGroup
                     key={i}
                     data={card}
-                    onClick={() => window.open(card.item.url)}
+                    onClick={() => window.open(card.link)}
                   />
                 ))}
             </div>
@@ -73,7 +75,7 @@ export default class Board extends Component<Props> {
                 <Card
                   key={i}
                   data={card}
-                  onClick={() => window.open(card.item.url)}
+                  onClick={() => window.open(card.link)}
                 />
               ))}
             </div>
@@ -84,6 +86,6 @@ export default class Board extends Component<Props> {
   }
 
   getAllStates() {
-    return [...new Set(this.props.data.baseCards.map(c => c.item.state))]
+    return [...new Set(this.props.data.baseCards.map(c => c.state))]
   }
 }

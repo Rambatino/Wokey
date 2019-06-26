@@ -2,13 +2,14 @@ package database
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 )
 
 type comment struct {
-	ID      string
-	Comment string
+	ID      string `json:"id"`
+	Comment string `json:"comment"`
 }
 
 type pullRequest struct {
@@ -21,7 +22,7 @@ type pullRequest struct {
 	Branch        string `json:"branch"`
 	Repo          string `json:"repo"`
 
-	Comments []comment
+	Comments []comment `json:"comments"`
 }
 
 func (p *pullRequest) label() string {
@@ -36,7 +37,7 @@ type issue struct {
 	State string `json:"state"`
 
 	PullRequests []pullRequest `json:"pullRequests"`
-	Comments     []comment
+	Comments     []comment     `json:"comments"`
 }
 
 func (i *issue) label() string {
@@ -178,7 +179,6 @@ func CheckForStateChange(state state, bucketID string) (newState state, changeCo
 		}
 	}
 
-	// store state
 	return formatState(issues, prs, append(state.Changes, newStateChangeStore...)), len(newStateChangeStore)
 }
 
@@ -191,12 +191,12 @@ func formatState(issues []issue, prs []pullRequest, stateChange []stateChange) s
 		for i, issueVar := range issues {
 			if strings.Contains(pr.Branch, issueVar.Key) || strings.Contains(pr.Title, issueVar.Key) {
 				var is issue
-				if len(issuesCopy) > i {
-					is = issuesCopy[i]
-				} else {
-					is = issueVar
-				}
-				is.PullRequests = append(is.PullRequests, pr)
+				is = issuesCopy[i]
+				pulls := append(is.PullRequests, pr)
+				sort.Slice(pulls, func(i, j int) bool {
+					return pulls[i].Number < pulls[j].Number
+				})
+				is.PullRequests = pulls
 				issuesCopy[i] = is
 				found = true
 			}
