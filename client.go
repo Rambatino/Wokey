@@ -61,15 +61,19 @@ type Client struct {
 // executing all writes from this goroutine.
 func (c *Client) writePump() {
 	ticker := time.NewTicker(pingPeriod)
+	isClosed := false
 	defer func() {
 		ticker.Stop()
+		isClosed = true
 		c.conn.Close()
 	}()
 	go func() {
 		if state, hasChanged := c.manager.Observe(); hasChanged > 0 {
 			reqBodyBytes := new(bytes.Buffer)
 			json.NewEncoder(reqBodyBytes).Encode(state)
-			c.send <- reqBodyBytes.Bytes()
+			if !isClosed {
+				c.send <- reqBodyBytes.Bytes()
+			}
 		}
 	}()
 	for {
@@ -102,7 +106,9 @@ func (c *Client) writePump() {
 			if state, hasChanged := c.manager.Observe(); hasChanged > 0 {
 				reqBodyBytes := new(bytes.Buffer)
 				json.NewEncoder(reqBodyBytes).Encode(state)
-				c.send <- reqBodyBytes.Bytes()
+				if !isClosed {
+					c.send <- reqBodyBytes.Bytes()
+				}
 			}
 		case <-ticker.C:
 			c.conn.SetWriteDeadline(time.Now().Add(writeWait))

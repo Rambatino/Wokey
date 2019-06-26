@@ -20,7 +20,7 @@ export default function cardsReducer(
 
 export const parseJSON = (state: any): Cards => {
   return {
-    baseCards: state.Issues.map(
+    baseCards: state.issues.map(
       (item: any) =>
         ({
           ...item,

@@ -29,7 +29,7 @@ export default class Card extends Component<Props> {
         <path d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z" />
       ),
     },
-    running: {
+    pending: {
       colour: this.orange,
       path: <path d="M0 8c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4-4-1.8-4-4z" />,
     },

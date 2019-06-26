@@ -47,19 +47,19 @@ func (i *issue) label() string {
 type state struct {
 	githubQuery  GithubQuerier
 	jiraQuery    JiraQuerier
-	Issues       []issue
-	PullRequests []pullRequest
-	Changes      []stateChange
+	Issues       []issue       `json:"issues"`
+	PullRequests []pullRequest `json:"pullRequests"`
+	Changes      []stateChange `json:"changes"`
 }
 
 type stateChange struct {
-	Type          string
-	Read          bool
-	Message       string
-	PullRequestID string
-	IssueID       string
-	CreatedAt     time.Time
-	SeenAt        time.Time
+	Type          string    `json:"type"`
+	Read          bool      `json:"read"`
+	Message       string    `json:"message"`
+	PullRequestID string    `json:"pullRequestID"`
+	IssueID       string    `json:"issueID"`
+	CreatedAt     time.Time `json:"createdAt"`
+	SeenAt        time.Time `json:"seenAt"`
 }
 
 var (
