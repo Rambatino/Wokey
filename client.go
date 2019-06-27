@@ -102,7 +102,7 @@ func (c *Client) writePump() {
 			if err := w.Close(); err != nil {
 				return
 			}
-		case <-time.After(30 * time.Second):
+		case <-time.After(time.Minute):
 			if state, hasChanged := c.manager.Observe(); hasChanged > 0 {
 				reqBodyBytes := new(bytes.Buffer)
 				json.NewEncoder(reqBodyBytes).Encode(state)

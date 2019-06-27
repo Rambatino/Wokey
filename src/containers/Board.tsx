@@ -60,7 +60,7 @@ export default class Board extends Component<Props> {
                 backgroundColor: allStates.length % 2 ? '#F8F8F8' : '#FFF',
               }}
             >
-              <p> Pull Requests </p>
+              <p> Other Open Pull Requests </p>
             </div>
             <div className="verticalLine" />
             <div

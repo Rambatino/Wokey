@@ -5,7 +5,7 @@ import (
 
 	"wokey/app"
 
-	// _ "github.com/Rambatino/gooff"
+	_ "github.com/Rambatino/gooff"
 	"github.com/joho/godotenv"
 )
 

@@ -12,6 +12,7 @@ export default class Card extends Component<Props> {
   orange = '#ffac45'
   red = '#cb2431'
   grey = '#6a737d'
+  purple = '#6f42c1'
 
   statusSymbol: {
     [key: string]: {
@@ -63,6 +64,13 @@ export default class Card extends Component<Props> {
         </svg>
       </div>
     ),
+    IS_MERGED: (
+      <div className="stateSymbol" style={{ backgroundColor: this.purple }}>
+        <svg className="mergedSVGCircle" width="16" height="16" fill="#FFF">
+          <path d="M10 7c-.73 0-1.38.41-1.73 1.02V8C7.22 7.98 6 7.64 5.14 6.98c-.75-.58-1.5-1.61-1.89-2.44A1.993 1.993 0 0 0 2 .99C.89.99 0 1.89 0 3a2 2 0 0 0 1 1.72v6.56c-.59.35-1 .99-1 1.72 0 1.11.89 2 2 2a1.993 1.993 0 0 0 1-3.72V7.67c.67.7 1.44 1.27 2.3 1.69.86.42 2.03.63 2.97.64v-.02c.36.61 1 1.02 1.73 1.02 1.11 0 2-.89 2-2 0-1.11-.89-2-2-2zm-6.8 6c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm8 6c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z" />
+        </svg>
+      </div>
+    ),
   }
 
   render() {
@@ -72,10 +80,13 @@ export default class Card extends Component<Props> {
         <div className="title">
           {this.formatTitle(this.props.data.title, this.props.data.link)}
         </div>
-        <div className="branch">{this.props.data.repo}</div>
+        <div className="branch">
+          {this.props.data.repo + ':' + this.props.data.branch}
+        </div>
         {this.svg(
-          (this.statusSymbol[this.props.data.ciStatus] || {}).colour,
-          (this.statusSymbol[this.props.data.ciStatus] || {}).path
+          (this.statusSymbol[this.props.data.ciStatus.status] || {}).colour,
+          (this.statusSymbol[this.props.data.ciStatus.status] || {}).path,
+          this.props.data.ciStatus.link
         )}
       </div>
     )
@@ -86,9 +97,19 @@ export default class Card extends Component<Props> {
     return '#' + (match.length > 0 ? match[0] : '') + ' ' + title
   }
 
-  svg(colour: string | undefined, path: JSX.Element | undefined) {
+  svg(
+    colour: string | undefined,
+    path: JSX.Element | undefined,
+    onClickUrl: string
+  ) {
     return (
-      <svg className="statusSymbol" width="20" height="20" fill={colour}>
+      <svg
+        className="statusSymbol"
+        width="20"
+        height="20"
+        fill={colour}
+        onClick={() => window.open(onClickUrl)}
+      >
         {path}
       </svg>
     )

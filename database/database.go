@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"os"
 	"sort"
 	"strings"
 	"time"
@@ -12,17 +13,23 @@ type comment struct {
 	Comment string `json:"comment"`
 }
 
-type pullRequest struct {
-	ID            string `json:"id"`
-	Number        int    `json:"number"`
-	ApprovalState string `json:"approvalState"`
-	CIStatus      string `json:"ciStatus"`
-	Title         string `json:"title"`
-	Link          string `json:"link"`
-	Branch        string `json:"branch"`
-	Repo          string `json:"repo"`
+type ciStatus struct {
+	Status string `json:"status"`
+	Link   string `json:"link"`
+}
 
-	Comments []comment `json:"comments"`
+type pullRequest struct {
+	ID            string   `json:"id"`
+	Number        int      `json:"number"`
+	ApprovalState string   `json:"approvalState"`
+	CIStatus      ciStatus `json:"ciStatus"`
+	Title         string   `json:"title"`
+	Link          string   `json:"link"`
+	Branch        string   `json:"branch"`
+	Repo          string   `json:"repo"`
+	state         string
+	author        string
+	Comments      []comment `json:"comments"`
 }
 
 func (p *pullRequest) label() string {
@@ -116,19 +123,19 @@ func CheckForStateChange(state state, bucketID string) (newState state, changeCo
 	// check if state is different to previous, if new, no state change, otherwise
 	// calculate state change
 
-	var issuesChan = make(chan []issue)
-	var prsChan = make(chan []pullRequest)
 	newStateChangeStore := []stateChange{}
 
-	go func() {
-		issuesChan <- state.jiraQuery.getJiraIssues()
-	}()
+	issues := state.jiraQuery.getJiraIssues()
 
-	go func() {
-		prsChan <- state.githubQuery.getGithubPullRequests()
-	}()
-	issues := <-issuesChan
-	prs := <-prsChan
+	keys := map[string]bool{}
+	keyStore := []string{}
+	for _, issue := range issues {
+		if !keys[issue.Key] {
+			keyStore = append(keyStore, issue.Key)
+			keys[issue.Key] = true
+		}
+	}
+	prs := state.githubQuery.getGithubPullRequests(keyStore)
 
 	for _, newIssue := range issues {
 		found := false
@@ -201,10 +208,14 @@ func formatState(issues []issue, prs []pullRequest, stateChange []stateChange) s
 				found = true
 			}
 		}
-		if !found {
+		if !found && pr.state == "open" && pr.author == os.Getenv("GITHUB_USER") {
 			lonePullRequests = append(lonePullRequests, pr)
 		}
 	}
+
+	sort.Slice(lonePullRequests, func(i, j int) bool {
+		return lonePullRequests[i].Number < lonePullRequests[j].Number
+	})
 
 	return state{
 		Changes:      stateChange,
@@ -244,14 +255,14 @@ func checkPullRequests(initialPullRequest, newPullRequest pullRequest) []stateCh
 		}
 	}
 	if newPullRequest.CIStatus != initialPullRequest.CIStatus {
-		if newPullRequest.CIStatus == CI_FAILED_STATE {
+		if newPullRequest.CIStatus.Status == CI_FAILED_STATE {
 			newStateChangeStore = append(newStateChangeStore, stateChange{
 				CreatedAt: time.Now(),
 				Type:      CI_FAILED,
 				Message:   ciFailedText(newPullRequest),
 			})
 		}
-		if newPullRequest.CIStatus == CI_SUCCEEDED_STATE {
+		if newPullRequest.CIStatus.Status == CI_SUCCEEDED_STATE {
 			newStateChangeStore = append(newStateChangeStore, stateChange{
 				CreatedAt: time.Now(),
 				Type:      CI_SUCCEEDED,

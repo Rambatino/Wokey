@@ -42,7 +42,7 @@
         {
           "id": "459677013",
           "number": 5535,
-          "approvalState": "APPROVED",
+          "approvalState": "IS_MERGED",
           "ciStatus": "pending",
           "title": "Added beacon_insights to the mailer",
           "link": "https://github.com/Intellection/zappistore.app/pull/5535",

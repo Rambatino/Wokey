@@ -34,15 +34,15 @@ func (m *MockGithubQuerier) EXPECT() *MockGithubQuerierMockRecorder {
 }
 
 // getGithubPullRequests mocks base method
-func (m *MockGithubQuerier) getGithubPullRequests() []pullRequest {
+func (m *MockGithubQuerier) getGithubPullRequests(arg0 []string) []pullRequest {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "getGithubPullRequests")
+	ret := m.ctrl.Call(m, "getGithubPullRequests", arg0)
 	ret0, _ := ret[0].([]pullRequest)
 	return ret0
 }
 
 // getGithubPullRequests indicates an expected call of getGithubPullRequests
-func (mr *MockGithubQuerierMockRecorder) getGithubPullRequests() *gomock.Call {
+func (mr *MockGithubQuerierMockRecorder) getGithubPullRequests(arg0 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "getGithubPullRequests", reflect.TypeOf((*MockGithubQuerier)(nil).getGithubPullRequests))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "getGithubPullRequests", reflect.TypeOf((*MockGithubQuerier)(nil).getGithubPullRequests), arg0)
 }

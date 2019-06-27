@@ -6,11 +6,16 @@ export interface Comment {
   comment: string
 }
 
+export interface Status {
+  status: string
+  link: string
+}
+
 export interface LinkedCard {
   id: string
   number: number
   approvalState: string
-  ciStatus: string
+  ciStatus: Status
   title: string
   link: string
   branch: string
