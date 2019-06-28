@@ -49,7 +49,10 @@ func StartServer() {
 	// manager := database.NewManager()
 	// manager.AddObserver("hi")
 	// database.CheckForState("")
-
-	log.Print("Server listening on http://localhost:1234/")
-	http.ListenAndServe("0.0.0.0:1234", nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "1234"
+	}
+	log.Print("Server listening on http://0.0.0.0:" + port + "/")
+	http.ListenAndServe("0.0.0.0:"+port, nil)
 }

@@ -9,8 +9,8 @@ import (
 )
 
 type comment struct {
-	ID      string `json:"id"`
-	Comment string `json:"comment"`
+	Count           int    `json:"count"`
+	LastCommentLink string `json:"lastCommentLink"`
 }
 
 type ciStatus struct {
@@ -29,7 +29,7 @@ type pullRequest struct {
 	Repo          string   `json:"repo"`
 	state         string
 	author        string
-	Comments      []comment `json:"comments"`
+	Comments      comment `json:"comments"`
 }
 
 func (p *pullRequest) label() string {
@@ -44,7 +44,7 @@ type issue struct {
 	State string `json:"state"`
 
 	PullRequests []pullRequest `json:"pullRequests"`
-	Comments     []comment     `json:"comments"`
+	Comments     comment       `json:"comments"`
 }
 
 func (i *issue) label() string {
@@ -114,6 +114,11 @@ var (
 	newPullRequestAssignedToIssueText  = func(pr pullRequest, issue issue) string {
 		return fmt.Sprintf("%s has been assigned to %s", pr.label(), issue.label())
 	}
+
+	NEW_PULL_REQUEST_OPENED  = "NEW_PULL_REQUEST_OPENED"
+	newPullRequestOpenedText = func(pr pullRequest) string {
+		return fmt.Sprintf("%s has been opened", pr.label())
+	}
 )
 
 func CheckForStateChange(state state, bucketID string) (newState state, changeCount int) {
@@ -143,11 +148,11 @@ func CheckForStateChange(state state, bucketID string) (newState state, changeCo
 			if newIssue.ID == initialIssue.ID {
 				found = true
 				// check if any added comments
-				if len(newIssue.Comments) > len(initialIssue.Comments) {
+				if newIssue.Comments.Count > initialIssue.Comments.Count {
 					newStateChangeStore = append(newStateChangeStore, stateChange{
 						CreatedAt: time.Now(),
 						Type:      NEW_ISSUE_COMMENT,
-						Message:   newIssueCommentText(newIssue, len(newIssue.Comments)-len(initialIssue.Comments)),
+						Message:   newIssueCommentText(newIssue, newIssue.Comments.Count-initialIssue.Comments.Count),
 					})
 				}
 
@@ -172,23 +177,34 @@ func CheckForStateChange(state state, bucketID string) (newState state, changeCo
 	}
 
 	for _, newPullRequest := range prs {
+		found := false
 		for _, initialIssue := range state.Issues {
 			for _, initialPullRequest := range initialIssue.PullRequests {
 				if newPullRequest.ID == initialPullRequest.ID {
 					newStateChangeStore = append(newStateChangeStore, checkPullRequests(initialPullRequest, newPullRequest)...)
+					found = true
 				}
 			}
 		}
 		for _, initialPullRequest := range state.PullRequests {
 			if newPullRequest.ID == initialPullRequest.ID {
 				newStateChangeStore = append(newStateChangeStore, checkPullRequests(initialPullRequest, newPullRequest)...)
+				found = true
 			}
+		}
+		if !found {
+			newStateChangeStore = append(newStateChangeStore, stateChange{
+				CreatedAt: time.Now(),
+				Type:      NEW_PULL_REQUEST_OPENED,
+				Message:   newPullRequestOpenedText(newPullRequest),
+			})
 		}
 	}
 
 	return formatState(issues, prs, append(state.Changes, newStateChangeStore...)), len(newStateChangeStore)
 }
 
+// need to combine new comments together if there are mutliple new comments coming in
 func formatState(issues []issue, prs []pullRequest, stateChange []stateChange) state {
 	lonePullRequests := []pullRequest{}
 	issuesCopy := append(issues[:0:0], issues...)
@@ -228,11 +244,11 @@ func checkPullRequests(initialPullRequest, newPullRequest pullRequest) []stateCh
 	newStateChangeStore := []stateChange{}
 
 	// check if comment number changed
-	if len(newPullRequest.Comments) > len(initialPullRequest.Comments) {
+	if newPullRequest.Comments.Count > initialPullRequest.Comments.Count {
 		newStateChange := stateChange{
 			CreatedAt: time.Now(),
 			Type:      NEW_PULL_REQUEST_COMMENT,
-			Message:   newPullRequestCommentText(newPullRequest, len(newPullRequest.Comments)-len(initialPullRequest.Comments)),
+			Message:   newPullRequestCommentText(newPullRequest, newPullRequest.Comments.Count-initialPullRequest.Comments.Count),
 		}
 		newStateChangeStore = append(newStateChangeStore, newStateChange)
 	}

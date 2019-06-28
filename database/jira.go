@@ -3,7 +3,7 @@ package database
 import (
 	"os"
 
-	"github.com/Rambatino/go-jira"
+	"github.com/andygrunwald/go-jira"
 )
 
 type JiraQuerier interface {

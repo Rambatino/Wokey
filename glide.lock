@@ -1,14 +1,18 @@
 hash: 2995d9e6741cc79344f519c7ca0b52da7d3d353cbba181b23575c22f4386cb77
-updated: 2019-05-21T15:09:48.909001+12:00
+updated: 2019-06-28T09:30:44.098666+08:00
 imports:
 - name: github.com/andygrunwald/go-jira
-  version: 84a0f1e46f9f716ff0acfa73ba22b2bd8278b239
+  version: b59a65c365dcefd42e135579e9b7ce9c9c006489
 - name: github.com/codegangsta/negroni
   version: c6a59be0ce122566695fbd5e48a77f8f10c8a63a
 - name: github.com/fatih/structs
   version: 878a968ab22548362a09bdb3322f98b00f470d46
+- name: github.com/golang/mock
+  version: 140ae90f29eaaadc229f8d4b78f074b7f0611c1e
+  subpackages:
+  - gomock
 - name: github.com/golang/protobuf
-  version: 05f48f4eaf0e05663b562bab533cdd472238ce29
+  version: b285ee9cfc6c881bb20c0d8dc73370ea9b9ec90f
   subpackages:
   - proto
 - name: github.com/google/go-github
@@ -20,27 +24,29 @@ imports:
   subpackages:
   - query
 - name: github.com/gorilla/context
-  version: 51ce91d2eaddeca0ef29a71d766bb3634dadf729
+  version: 8559d4a6b87e4f517ec1846eb90a192b8748cc89
 - name: github.com/gorilla/handlers
   version: 7e0847f9db758cdebd26c149d0ae9d5d0b9c98ce
 - name: github.com/gorilla/mux
   version: ed099d42384823742bba0bf9a72b53b55c9e2e38
 - name: github.com/gorilla/securecookie
-  version: e65cf8c5df817c89aeb47ecb46064e802e2de943
+  version: 629b6af17341019b261eab06da74c418942918d9
 - name: github.com/gorilla/sessions
   version: f57b7e2d29c6211d16ffa52a0998272f75799030
+- name: github.com/gorilla/websocket
+  version: 80c2d40e9b91f2ef7a9c1a403aeec64d1b89a9a6
 - name: github.com/joho/godotenv
   version: 23d116af351c84513e1946b527c88823e476be13
 - name: github.com/k0kubun/pp
   version: 3d73dea227e0711e38b911ffa6fbafc8ff6b2991
 - name: github.com/mattn/go-colorable
-  version: 3a70a971f94a22f2fa562ffcc7a0eb45f5daf045
+  version: 8029fb3788e5a4a9c00e415f586a6d033f5d38b3
 - name: github.com/mattn/go-isatty
-  version: c1975dc15c1d481e8da23f6ed313bb071136b98f
+  version: 1311e847b0cb909da63b5fecfb5370aa66236465
 - name: github.com/pkg/errors
-  version: 2233dee583dcf88f3c8b22cb7a33f05a499800d8
+  version: 27936f6d90f9c8e1145f11ed52ffffbfdb9e0af7
 - name: github.com/Rambatino/Wokey
-  version: 4078169d1e73a1dd6c152f760e401803e0ff5cf2
+  version: e532ac9569df59c71b7464279ca637cf677b85e6
   subpackages:
   - app
 - name: github.com/trivago/tgo
@@ -49,20 +55,20 @@ imports:
   - tcontainer
   - treflect
 - name: golang.org/x/net
-  version: d26f9f9a57f3fab6a695bec0d84433c2c50f8bbf
+  version: 3b0461eec859c4b73bb64fdc8285971fd33e3938
   subpackages:
   - context
   - context/ctxhttp
 - name: golang.org/x/oauth2
-  version: 950ef44c6e079baf075030377d90bf0c7e4b7b7a
+  version: 0f29369cfe4552d0e4bcddc57cc75f4d7e672a33
   subpackages:
   - internal
 - name: golang.org/x/sys
-  version: 7c1e4f34a39c8bf93b6a3379e4ffb3b118ecc614
+  version: 04f50cda93cbb67f2afa353c52f342100e80e625
   subpackages:
   - unix
 - name: google.golang.org/appengine
-  version: 311d3c5cf9373249645db030e53c37c209a8b378
+  version: b2f4a3cf3c67576a2ee09e1fe62656a5086ce880
   subpackages:
   - internal
   - internal/base
@@ -71,4 +77,6 @@ imports:
   - internal/remote_api
   - internal/urlfetch
   - urlfetch
-testImports: []
+testImports:
+- name: bou.ke/monkey
+  version: ca6af776195d439150856932e66b35a08b1ad680

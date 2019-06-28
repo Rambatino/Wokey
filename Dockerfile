@@ -1,7 +1,8 @@
-FROM golang:1.11.5
+FROM golang:latest
 WORKDIR /go/src/wokey
-COPY main.go glide.yaml glide.lock server.go ./
+COPY main.go glide.yaml glide.lock server.go client.go hub.go ./
 COPY app app/
+COPY database database/
 COPY routes routes/
 RUN curl https://glide.sh/get | sh
 RUN glide install
@@ -12,6 +13,10 @@ WORKDIR /root/
 RUN apk --no-cache add ca-certificates
 COPY --from=0 /go/src/wokey/main .
 COPY public public/
-COPY build build/
+COPY src src/
+COPY package.json package-lock.json tsconfig.json ./
+RUN apk add --update nodejs nodejs-npm
+RUN npm install
+RUN npm run-script build
 COPY .env .env
 CMD ["./main"]

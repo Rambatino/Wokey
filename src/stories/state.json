@@ -8,61 +8,61 @@
       "state": "Ready for Test",
       "pullRequests": [
         {
+          "id": "446926681",
+          "number": 32,
+          "approvalState": "IS_MERGED",
+          "ciStatus": {
+            "status": "success",
+            "link": "https://jenkins.zappi.it/job/test-pr-data-collector-connector/11/"
+          },
+          "title": "Feature/adpulse 225",
+          "link": "https://github.com/Intellection/data_collector_connector/pull/32",
+          "branch": "feature/ADPULSE-225",
+          "repo": "Intellection/data_collector_connector",
+          "comments": {
+            "count": 5,
+            "lastCommentLink": "https://github.com/Intellection/data_collector_connector/pull/32#pullrequestreview-244201680"
+          }
+        },
+        {
           "id": "446908482",
           "number": 2379,
-          "approvalState": "COMMENTED",
-          "ciStatus": "success",
+          "approvalState": "APPROVED",
+          "ciStatus": {
+            "status": "success",
+            "link": "https://codecov.io/gh/Intellection/data-collector.app/compare/e29581ef78d9d877a6b6d58eb8a384601917fb07...4935ac3f6b017524f53008fe40473973186f4960"
+          },
           "title": "Created new Ad Pulse end point to return key metrics for ad pulse surveys",
           "link": "https://github.com/Intellection/data-collector.app/pull/2379",
           "branch": "feature/ADPULSE-225",
           "repo": "Intellection/data-collector.app",
-          "comments": null
+          "comments": {
+            "count": 16,
+            "lastCommentLink": "https://github.com/Intellection/data-collector.app/pull/2379#pullrequestreview-254463167"
+          }
         },
         {
           "id": "446926830",
           "number": 5441,
           "approvalState": "CONFLICTED",
-          "ciStatus": "success",
+          "ciStatus": {
+            "status": "success",
+            "link": "https://codecov.io/gh/Intellection/zappistore.app/compare/7f50e77ae739fe51c0e9ac74b28d71df103fba94...c91717853170cd16d9b1083faf54d400969729ab"
+          },
           "title": "Added a way to fetch responses per beacon for the admin table",
           "link": "https://github.com/Intellection/zappistore.app/pull/5441",
           "branch": "feature/ADPULSE-225",
           "repo": "Intellection/zappistore.app",
-          "comments": null
+          "comments": {
+            "count": 20,
+            "lastCommentLink": "https://github.com/Intellection/zappistore.app/pull/5441#pullrequestreview-254460452"
+          }
         }
       ],
-      "comments": null
-    },
-    {
-      "id": "77513",
-      "key": "ADPULSE-226",
-      "title": "Automated insights part 2 (pixel insights)",
-      "link": "https://zigroup.atlassian.net/browse/ADPULSE-226",
-      "state": "Ready for Test",
-      "pullRequests": [
-        {
-          "id": "459677013",
-          "number": 5535,
-          "approvalState": "IS_MERGED",
-          "ciStatus": "pending",
-          "title": "Added beacon_insights to the mailer",
-          "link": "https://github.com/Intellection/zappistore.app/pull/5535",
-          "branch": "feature/ADPULSE-226",
-          "repo": "Intellection/zappistore.app",
-          "comments": null
-        },
-        {
-          "id": "449045905",
-          "number": 9841,
-          "approvalState": "APPROVED",
-          "ciStatus": "failure",
-          "title": "Feature/adpulse 226 - Adding pixel rules to the email and notifier too",
-          "link": "https://github.com/Intellection/zappi.client/pull/9841",
-          "branch": "feature/ADPULSE-226",
-          "repo": "Intellection/zappi.client",
-          "comments": null
-        }
-      ],
-      "comments": null
+      "comments": {
+        "count": 0,
+        "lastCommentLink": ""
+      }
     },
     {
       "id": "77418",
@@ -72,69 +72,80 @@
       "state": "Blocked (internal)",
       "pullRequests": [
         {
+          "id": "450110310",
+          "number": 9865,
+          "approvalState": "IS_MERGED",
+          "ciStatus": {
+            "status": "success",
+            "link": "https://codecov.io/gh/Intellection/zappi.client/compare/d2cb7192782302710f9e56b6260070c26105d630...554f7a4e8b4c1b7a8a1bfed2fd044a476d095d75"
+          },
+          "title": "Fixed storybook and added pagination to the chart. Also, made the cha…",
+          "link": "https://github.com/Intellection/zappi.client/pull/9865",
+          "branch": "feature/ADPULSE-224",
+          "repo": "Intellection/zappi.client",
+          "comments": {
+            "count": 5,
+            "lastCommentLink": "https://github.com/Intellection/zappi.client/pull/9865#pullrequestreview-245184083"
+          }
+        },
+        {
           "id": "452246264",
           "number": 9901,
           "approvalState": "",
-          "ciStatus": "success",
+          "ciStatus": {
+            "status": "success",
+            "link": "https://circleci.com/gh/Intellection/zappi.client/71069?utm_campaign=vcs-integration-link\u0026utm_medium=referral\u0026utm_source=github-build-link"
+          },
           "title": "[ADPULSE-224] Add exports to brand impact page",
           "link": "https://github.com/Intellection/zappi.client/pull/9901",
           "branch": "add_exports",
           "repo": "Intellection/zappi.client",
-          "comments": null
+          "comments": {
+            "count": 0,
+            "lastCommentLink": ""
+          }
         }
       ],
-      "comments": null
-    },
-    {
-      "id": "53105",
-      "key": "DS-93",
-      "title": "Creative Video Expertise Rules",
-      "link": "https://zigroup.atlassian.net/browse/DS-93",
-      "state": "Existing solution",
-      "pullRequests": null,
-      "comments": null
-    },
-    {
-      "id": "34236",
-      "key": "ARCHIVE-778",
-      "title": "Zappi Teams have key metrics to better understand the business",
-      "link": "https://zigroup.atlassian.net/browse/ARCHIVE-778",
-      "state": "Evaluation",
-      "pullRequests": null,
-      "comments": null
-    },
-    {
-      "id": "58939",
-      "key": "IT-37",
-      "title": "Findings should display the correct Measure",
-      "link": "https://zigroup.atlassian.net/browse/IT-37",
-      "state": "Existing solution",
-      "pullRequests": null,
-      "comments": null
+      "comments": {
+        "count": 0,
+        "lastCommentLink": ""
+      }
     }
   ],
   "pullRequests": [
     {
-      "id": "446863199",
-      "number": 9828,
-      "approvalState": "CONFLICTED",
-      "ciStatus": "success",
-      "title": "Added link to campaigns",
-      "link": "https://github.com/Intellection/zappi.client/pull/9828",
-      "branch": "feature/ADPULSE-219",
-      "repo": "Intellection/zappi.client",
-      "comments": null
-    },
-    {
       "id": "454489037",
       "number": 9925,
-      "approvalState": "COMMENTED",
-      "ciStatus": "success",
-      "title": "Fixed campaign name",
+      "approvalState": "APPROVED",
+      "ciStatus": {
+        "status": "success",
+        "link": "https://codecov.io/gh/Intellection/zappi.client/compare/0b725974728ebce34e4260aad682a68bf035ddc8...f45f8a3c4ba73377da27a8fcb0ff9e5cb4c6001a"
+      },
+      "title": "Fixed pixel name",
       "link": "https://github.com/Intellection/zappi.client/pull/9925",
       "branch": "fix_campaign_name",
       "repo": "Intellection/zappi.client",
-      "comments": null
+      "comments": {
+        "count": 2,
+        "lastCommentLink": "https://github.com/Intellection/zappi.client/pull/9925#pullrequestreview-254474719"
+      }
+    },
+    {
+      "id": "460813840",
+      "number": 9976,
+      "approvalState": "",
+      "ciStatus": {
+        "status": "failure",
+        "link": "https://circleci.com/gh/Intellection/zappi.client/72353?utm_campaign=vcs-integration-link\u0026utm_medium=referral\u0026utm_source=github-build-link"
+      },
+      "title": "Added beacon insights to be sent to slack",
+      "link": "https://github.com/Intellection/zappi.client/pull/9976",
+      "branch": "beacon_insights_to_slack_too",
+      "repo": "Intellection/zappi.client",
+      "comments": {
+        "count": 0,
+        "lastCommentLink": ""
+      }
     }
   ],
   "changes": [
@@ -144,16 +155,7 @@
       "message": "'Monitoring impressions and respondents per pixel and by campaign' [ADPULSE-225] has been assigned to you",
       "pullRequestID": "",
       "issueID": "",
-      "createdAt": "2019-06-26T10:56:31.155655+08:00",
-      "seenAt": "0001-01-01T00:00:00Z"
-    },
-    {
-      "type": "NEW_ISSUE_ASSIGNED",
-      "read": false,
-      "message": "'Automated insights part 2 (pixel insights)' [ADPULSE-226] has been assigned to you",
-      "pullRequestID": "",
-      "issueID": "",
-      "createdAt": "2019-06-26T10:56:31.155663+08:00",
+      "createdAt": "2019-06-27T14:48:06.847553+08:00",
       "seenAt": "0001-01-01T00:00:00Z"
     },
     {
@@ -162,34 +164,7 @@
       "message": "'Enable chart export in PDF and PPT' [ADPULSE-224] has been assigned to you",
       "pullRequestID": "",
       "issueID": "",
-      "createdAt": "2019-06-26T10:56:31.155665+08:00",
-      "seenAt": "0001-01-01T00:00:00Z"
-    },
-    {
-      "type": "NEW_ISSUE_ASSIGNED",
-      "read": false,
-      "message": "'Creative Video Expertise Rules' [DS-93] has been assigned to you",
-      "pullRequestID": "",
-      "issueID": "",
-      "createdAt": "2019-06-26T10:56:31.155667+08:00",
-      "seenAt": "0001-01-01T00:00:00Z"
-    },
-    {
-      "type": "NEW_ISSUE_ASSIGNED",
-      "read": false,
-      "message": "'Zappi Teams have key metrics to better understand the business' [ARCHIVE-778] has been assigned to you",
-      "pullRequestID": "",
-      "issueID": "",
-      "createdAt": "2019-06-26T10:56:31.155668+08:00",
-      "seenAt": "0001-01-01T00:00:00Z"
-    },
-    {
-      "type": "NEW_ISSUE_ASSIGNED",
-      "read": false,
-      "message": "'Findings should display the correct Measure' [IT-37] has been assigned to you",
-      "pullRequestID": "",
-      "issueID": "",
-      "createdAt": "2019-06-26T10:56:31.155669+08:00",
+      "createdAt": "2019-06-27T14:48:06.847562+08:00",
       "seenAt": "0001-01-01T00:00:00Z"
     }
   ]

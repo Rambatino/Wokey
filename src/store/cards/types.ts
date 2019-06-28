@@ -2,8 +2,8 @@ import { ThunkDispatch } from 'redux-thunk'
 import { AnyAction } from 'redux'
 
 export interface Comment {
-  id: string
-  comment: string
+  count: number
+  lastCommentLink: string
 }
 
 export interface Status {
@@ -21,7 +21,7 @@ export interface LinkedCard {
   branch: string
   repo: string
 
-  comments: Array<Comment>
+  comments: Comment
 }
 
 export interface BaseCard {
@@ -31,7 +31,7 @@ export interface BaseCard {
   link: string
   state: string
 
-  comments: Array<Comment>
+  comments: Comment
   linkedCards: Array<LinkedCard>
 }
 

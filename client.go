@@ -68,12 +68,11 @@ func (c *Client) writePump() {
 		c.conn.Close()
 	}()
 	go func() {
-		if state, hasChanged := c.manager.Observe(); hasChanged > 0 {
-			reqBodyBytes := new(bytes.Buffer)
-			json.NewEncoder(reqBodyBytes).Encode(state)
-			if !isClosed {
-				c.send <- reqBodyBytes.Bytes()
-			}
+		state, _ := c.manager.Observe()
+		reqBodyBytes := new(bytes.Buffer)
+		json.NewEncoder(reqBodyBytes).Encode(state)
+		if !isClosed {
+			c.send <- reqBodyBytes.Bytes()
 		}
 	}()
 	for {
@@ -102,18 +101,17 @@ func (c *Client) writePump() {
 			if err := w.Close(); err != nil {
 				return
 			}
-		case <-time.After(time.Minute):
+		case <-ticker.C:
+			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+				return
+			}
 			if state, hasChanged := c.manager.Observe(); hasChanged > 0 {
 				reqBodyBytes := new(bytes.Buffer)
 				json.NewEncoder(reqBodyBytes).Encode(state)
 				if !isClosed {
 					c.send <- reqBodyBytes.Bytes()
 				}
-			}
-		case <-ticker.C:
-			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
-			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
-				return
 			}
 		}
 	}
@@ -149,7 +147,6 @@ func (c *Client) readPump() {
 func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println(err)
 		return
 	}
 	manager := database.NewManager("")

@@ -35,6 +35,12 @@ export default class Card extends Component<Props> {
       path: <path d="M0 8c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4-4-1.8-4-4z" />,
     },
   }
+  commentSymbol: { colour: string; path: JSX.Element | undefined } = {
+    colour: '#586069',
+    path: (
+      <path d="M14 1H2c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h2v3.5L7.5 11H14c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1zm0 9H7l-2 2v-2H2V2h12v8z" />
+    ),
+  }
   stateSymbol: { [key: string]: JSX.Element | undefined } = {
     APPROVED: (
       <div className="stateSymbol" style={{ backgroundColor: this.green }}>
@@ -88,6 +94,10 @@ export default class Card extends Component<Props> {
           (this.statusSymbol[this.props.data.ciStatus.status] || {}).path,
           this.props.data.ciStatus.link
         )}
+        {this.comment(
+          this.props.data.comments.count,
+          this.props.data.comments.lastCommentLink
+        )}
       </div>
     )
   }
@@ -95,6 +105,31 @@ export default class Card extends Component<Props> {
   formatTitle(title: string, url: string): string {
     const match = url.match(/(\d+)\b/) || []
     return '#' + (match.length > 0 ? match[0] : '') + ' ' + title
+  }
+
+  comment(count: number, link: string) {
+    if (count === 0) {
+      return null
+    }
+    return (
+      <div>
+        <svg
+          className="commentSymbol"
+          width="20"
+          height="20"
+          fill={this.commentSymbol.colour}
+          onClick={() => window.open(link)}
+        >
+          {this.commentSymbol.path}
+        </svg>
+        <p
+          className="commentCount"
+          style={{ color: this.commentSymbol.colour }}
+        >
+          {count}
+        </p>
+      </div>
+    )
   }
 
   svg(

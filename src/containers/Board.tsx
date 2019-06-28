@@ -16,7 +16,8 @@ type Props = {
 // all the cards are layed out
 export default class Board extends Component<Props> {
   render() {
-    if (this.props.data.baseCards.length == 0) {
+    const { baseCards, linkedCards } = this.props.data
+    if (baseCards.length + linkedCards.length === 0) {
       return null
     }
     const allStates = this.getAllStates()
@@ -40,7 +41,7 @@ export default class Board extends Component<Props> {
                 backgroundColor: i % 2 ? '#F8F8F8' : '#FFF',
               }}
             >
-              {this.props.data.baseCards
+              {baseCards
                 .filter(card => card.state === state)
                 .map((card, i) => (
                   <CardGroup
@@ -52,7 +53,7 @@ export default class Board extends Component<Props> {
             </div>
           </div>
         ))}
-        {this.props.data.linkedCards.length > 0 && (
+        {linkedCards.length > 0 && (
           <div className="boardRow">
             <div
               className="statusTitle"
@@ -71,7 +72,7 @@ export default class Board extends Component<Props> {
                 backgroundColor: allStates.length % 2 ? '#F8F8F8' : '#FFF',
               }}
             >
-              {this.props.data.linkedCards.map((card, i) => (
+              {linkedCards.map((card, i) => (
                 <Card
                   key={i}
                   data={card}

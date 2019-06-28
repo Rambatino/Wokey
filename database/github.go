@@ -105,14 +105,18 @@ func (g *githubQuery) getGithubPullRequests(jiraKeys []string) []pullRequest {
 
 			statuses, _, err := client.Repositories.ListStatuses(ctx, split[0], split[1], pr.GetHead().GetSHA(), nil)
 
-			reviews := <-reviewsChan
-
 			if err != nil {
 				log.Println(err.Error())
 				return
 			}
 
-			for _, rev := range reviews {
+			lastCommentURL := ""
+			commentCount := 0
+			for _, rev := range <-reviewsChan {
+				if rev.GetHTMLURL() != "" {
+					lastCommentURL = rev.GetHTMLURL()
+				}
+				commentCount++
 				state = formatStatus(rev.GetState(), state)
 			}
 
@@ -131,6 +135,7 @@ func (g *githubQuery) getGithubPullRequests(jiraKeys []string) []pullRequest {
 				Number:        i.GetNumber(),
 				state:         pr.GetState(),
 				author:        pr.GetUser().GetLogin(),
+				Comments:      comment{LastCommentLink: lastCommentURL, Count: commentCount},
 			})
 		}(issue, &wg)
 	}
