@@ -1,8 +1,8 @@
 FROM golang:latest
 WORKDIR /go/src/wokey
 COPY main.go glide.yaml glide.lock server.go client.go hub.go ./
-COPY app app/
 COPY database database/
+COPY app app/
 COPY routes routes/
 RUN curl https://glide.sh/get | sh
 RUN glide install

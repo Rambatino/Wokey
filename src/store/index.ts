@@ -3,15 +3,17 @@ import thunk from 'redux-thunk'
 
 import { combineReducers } from 'redux'
 import cardsReducer from './cards/reducer'
+import connectionReducer from './connection/reducer'
 
 import reduxWebsocket from '@giantmachines/redux-websocket'
 
 const rootReducer = combineReducers({
   cards: cardsReducer,
+  connectedState: connectionReducer,
 })
 
 // Create the middleware instance.
-const reduxWebsocketMiddleware = reduxWebsocket()
+const reduxWebsocketMiddleware = reduxWebsocket({ reconnectInterval: 12 })
 
 export type AppState = ReturnType<typeof rootReducer>
 

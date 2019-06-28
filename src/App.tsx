@@ -5,11 +5,13 @@ import { Cards, CardThunkDispatch } from './store/cards/types'
 import { AppState } from './store'
 import { connect } from 'react-redux'
 import { connect as websocketConnect } from '@giantmachines/redux-websocket'
+import Banner from './components/Banner'
 
 // https://github.com/reduxjs/redux-thunk/issues/213
 interface AppProps {
   cards: Cards
   connect: () => void
+  connectedState: string
 }
 
 class App extends Component<AppProps> {
@@ -20,6 +22,7 @@ class App extends Component<AppProps> {
   render() {
     return (
       <div className="App">
+        <Banner state={this.props.connectedState} />
         <Board data={this.props.cards} />
       </div>
     )
@@ -28,6 +31,7 @@ class App extends Component<AppProps> {
 
 const mapStateToProps = (state: AppState) => ({
   cards: state.cards,
+  connectedState: state.connectedState,
 })
 
 const mapDispatchToProps = (dispatch: CardThunkDispatch) => ({
