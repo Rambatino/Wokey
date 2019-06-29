@@ -11,7 +11,11 @@ import {
 type Props = {
   state: string
 }
-export default class Banner extends Component<Props> {
+type State = {
+  open: boolean
+}
+
+export default class Banner extends Component<Props, State> {
   config: { [key: string]: { colour: string; text: string } } = {
     [CONNECT_STATE]: {
       colour: '#FFCC00',
@@ -31,12 +35,15 @@ export default class Banner extends Component<Props> {
     },
   }
   currentState: string | undefined
-
+  state: State = { open: false }
   render() {
     const { state } = this.props
     if (state === MESSAGE_STATE) {
+      this.setState({ open: false })
+
       return null
     }
+    this.setState({ open: true })
     return (
       <div
         className="banner"
