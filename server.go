@@ -12,6 +12,7 @@ import (
 	"wokey/routes/user"
 
 	"github.com/codegangsta/negroni"
+	"github.com/dgraph-io/badger"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
@@ -35,7 +36,18 @@ func StartServer() {
 	}))
 	http.Handle("/", handlers.CombinedLoggingHandler(os.Stdout, r))
 
-	hub := newHub()
+	opts := badger.DefaultOptions
+	opts.Dir = "/tmp/wokey"
+	opts.ValueDir = "/tmp/wokey"
+
+	db, err := badger.Open(opts)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	hub := newHub(db)
 	go hub.run()
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		serveWs(hub, w, r)

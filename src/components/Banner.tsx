@@ -39,11 +39,8 @@ export default class Banner extends Component<Props, State> {
   render() {
     const { state } = this.props
     if (state === MESSAGE_STATE) {
-      this.setState({ open: false })
-
       return null
     }
-    this.setState({ open: true })
     return (
       <div
         className="banner"

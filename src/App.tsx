@@ -22,7 +22,6 @@ class App extends Component<AppProps> {
   render() {
     return (
       <div className="App">
-        <Banner state={this.props.connectedState} />
         <Board data={this.props.cards} />
       </div>
     )

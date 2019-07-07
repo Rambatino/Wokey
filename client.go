@@ -149,7 +149,7 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		return
 	}
-	manager := database.NewManager("")
+	manager := database.NewManager("TEST_USER", hub.db)
 	client := &Client{hub: hub, conn: conn, send: make(chan []byte, 256*16), manager: &manager}
 	client.hub.register <- client
 

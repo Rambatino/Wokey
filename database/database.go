@@ -6,6 +6,8 @@ import (
 	"sort"
 	"strings"
 	"time"
+
+	"github.com/k0kubun/pp"
 )
 
 type comment struct {
@@ -121,13 +123,7 @@ var (
 	}
 )
 
-func CheckForStateChange(state state, bucketID string) (newState state, changeCount int) {
-	// get previous state, or return empty state
-	// state := state.(*state)
-	// get github pull requests and jira stories
-	// check if state is different to previous, if new, no state change, otherwise
-	// calculate state change
-
+func CheckForStateChange(state state) (newState state, changeCount int) {
 	newStateChangeStore := []stateChange{}
 
 	issues := state.jiraQuery.getJiraIssues()
@@ -244,6 +240,7 @@ func checkPullRequests(initialPullRequest, newPullRequest pullRequest) []stateCh
 	newStateChangeStore := []stateChange{}
 
 	// check if comment number changed
+	pp.Println("PR", newPullRequest.Number, initialPullRequest.Comments.Count, newPullRequest.Comments.Count)
 	if newPullRequest.Comments.Count > initialPullRequest.Comments.Count {
 		newStateChange := stateChange{
 			CreatedAt: time.Now(),

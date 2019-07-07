@@ -4,6 +4,7 @@ import { Cards, BaseCard, LinkedCard } from './types'
 const initialState: Cards = {
   linkedCards: [],
   baseCards: [],
+  changes: [],
 }
 
 export default function cardsReducer(
@@ -28,5 +29,6 @@ export const parseJSON = (state: any): Cards => {
         } as BaseCard)
     ),
     linkedCards: state.pullRequests || [],
+    changes: state.changes || [],
   }
 }

@@ -35,9 +35,20 @@ export interface BaseCard {
   linkedCards: Array<LinkedCard>
 }
 
+export interface Change {
+  type: string
+  read: boolean
+  message: string
+  pullRequestID: string
+  issueID: string
+  createdAt: string
+  seenAt: string
+}
+
 export interface Cards {
   linkedCards: Array<LinkedCard>
   baseCards: Array<BaseCard>
+  changes: Array<Change>
 }
 
 export const SET_STATE = 'REDUX_WEBSOCKET::MESSAGE'

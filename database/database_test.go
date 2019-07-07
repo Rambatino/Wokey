@@ -61,7 +61,7 @@ func TestCheckForState(t *testing.T) {
 				githubQuery:  mockGithub,
 				Changes:      []stateChange{},
 			}
-			newState, hasChanged := CheckForStateChange(initialState, "")
+			newState, hasChanged := CheckForStateChange(initialState)
 			if !reflect.DeepEqual(newState.Changes, tc.expected) {
 				t.Errorf("Change is not equal to expected\n%+v\n%+v	", newState.Changes, tc.expected)
 			}
