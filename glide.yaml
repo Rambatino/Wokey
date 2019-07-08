@@ -21,3 +21,5 @@ import:
 - package: github.com/k0kubun/pp
   version: v3.0.1
 - package: golang.org/x/oauth2
+- package: github.com/dgraph-io/badger
+  version: v2.0.0-rc2
