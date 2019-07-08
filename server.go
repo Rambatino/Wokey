@@ -36,10 +36,7 @@ func StartServer() {
 	}))
 	http.Handle("/", handlers.CombinedLoggingHandler(os.Stdout, r))
 
-	opts := badger.DefaultOptions
-	opts.Dir = "/tmp/wokey"
-	opts.ValueDir = "/tmp/wokey"
-
+	opts := badger.DefaultOptions("/tmp/wokey")
 	db, err := badger.Open(opts)
 
 	if err != nil {
