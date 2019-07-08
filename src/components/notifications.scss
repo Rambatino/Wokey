@@ -12,5 +12,13 @@
 
   .notification {
     text-align: left;
+    border-bottom: 0.5px solid #fefefe;
+    padding-top: 10px;
+    min-height: 70px;
+    height: 70px;
+    max-height: 70px;
+    font-size: 0.9rem;
+    margin-left: 50px;
+    vertical-align: middle;
   }
 }
