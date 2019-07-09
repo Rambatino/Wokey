@@ -11,7 +11,6 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 FROM alpine:3.8
 WORKDIR /root/
 RUN apk --no-cache add ca-certificates
-COPY --from=0 /go/src/wokey/main .
 COPY public public/
 COPY src src/
 COPY package.json package-lock.json tsconfig.json ./
@@ -19,4 +18,5 @@ RUN apk add --update nodejs nodejs-npm
 RUN npm install
 RUN npm run-script build
 COPY .env .env
+COPY --from=0 /go/src/wokey/main .
 CMD ["./main"]
