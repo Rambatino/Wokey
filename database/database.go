@@ -33,7 +33,7 @@ type pullRequest struct {
 }
 
 func (p *pullRequest) label() string {
-	return fmt.Sprintf("#%v [%s]", p.Number, p.Title, p.Repo)
+	return fmt.Sprintf("#%v [%s]", p.Number, p.Repo)
 }
 
 type issue struct {
@@ -48,7 +48,7 @@ type issue struct {
 }
 
 func (i *issue) label() string {
-	return fmt.Sprintf("'%s'", i.Title, i.Key)
+	return fmt.Sprintf("%s", i.Key)
 }
 
 type state struct {
