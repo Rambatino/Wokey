@@ -6,8 +6,6 @@ import (
 	"sort"
 	"strings"
 	"time"
-
-	"github.com/k0kubun/pp"
 )
 
 type comment struct {
@@ -35,7 +33,7 @@ type pullRequest struct {
 }
 
 func (p *pullRequest) label() string {
-	return fmt.Sprintf("#%v '%s' [%s]", p.Number, p.Title, p.Repo)
+	return fmt.Sprintf("#%v [%s]", p.Number, p.Title, p.Repo)
 }
 
 type issue struct {
@@ -50,7 +48,7 @@ type issue struct {
 }
 
 func (i *issue) label() string {
-	return fmt.Sprintf("'%s' [%s]", i.Title, i.Key)
+	return fmt.Sprintf("'%s'", i.Title, i.Key)
 }
 
 type state struct {
@@ -240,7 +238,6 @@ func checkPullRequests(initialPullRequest, newPullRequest pullRequest) []stateCh
 	newStateChangeStore := []stateChange{}
 
 	// check if comment number changed
-	pp.Println("PR", newPullRequest.Number, initialPullRequest.Comments.Count, newPullRequest.Comments.Count)
 	if newPullRequest.Comments.Count > initialPullRequest.Comments.Count {
 		newStateChange := stateChange{
 			CreatedAt: time.Now(),
