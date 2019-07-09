@@ -14,6 +14,7 @@ import (
 	database "wokey/database"
 
 	"github.com/gorilla/websocket"
+	"github.com/k0kubun/pp"
 )
 
 const (
@@ -147,6 +148,7 @@ func (c *Client) readPump() {
 func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
+		pp.Println(err)
 		return
 	}
 	manager := database.NewManager("TEST_USER", hub.db)
