@@ -9,18 +9,15 @@ type Props = {
 
 export default class Notifications extends Component<Props> {
   render() {
-    console.log(this.props)
+    if (this.props.changes.length == 0) {
+      return null
+    }
     return (
       <div className="notifications">
         <p>Recent Activity</p>
-
-        {this.props.changes.length > 0 ? (
-          this.props.changes.map((change, i) => (
-            <Notification key={i} change={change} />
-          ))
-        ) : (
-          <p> No new alerts. You're all set </p>
-        )}
+        {this.props.changes.map((change, i) => (
+          <Notification key={i} change={change} />
+        ))}
       </div>
     )
   }
