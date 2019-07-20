@@ -264,7 +264,8 @@ func checkPullRequests(initialPullRequest, newPullRequest pullRequest) []stateCh
 			})
 		}
 	}
-	if newPullRequest.CIStatus != initialPullRequest.CIStatus {
+
+	if newPullRequest.CIStatus.Status != initialPullRequest.CIStatus.Status {
 		if newPullRequest.CIStatus.Status == CI_FAILED_STATE {
 			newStateChangeStore = append(newStateChangeStore, stateChange{
 				CreatedAt: time.Now(),

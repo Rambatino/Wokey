@@ -6,6 +6,7 @@ import { AppState } from './store'
 import { connect } from 'react-redux'
 import { connect as websocketConnect } from '@giantmachines/redux-websocket'
 import Notifications from './components/Notifications'
+import Toolbar from './components/Toolbar'
 
 // https://github.com/reduxjs/redux-thunk/issues/213
 interface AppProps {
@@ -23,6 +24,7 @@ class App extends Component<AppProps> {
   render() {
     return (
       <div className="App">
+        <Toolbar />
         <Notifications changes={this.props.notifications} />
         <Board data={this.props.cards} />
       </div>

@@ -8,12 +8,18 @@ import Card from '../components/Card'
 import { parseJSON } from '../store/cards/reducer'
 import Banner from '../components/Banner'
 import Notifications from '../components/Notifications'
+import Toolbar from '../components/Toolbar'
+import './index.css'
 
 const stateData = parseJSON(state)
 
 storiesOf('New Workstate', module)
-  .add('Notifications empty', () => <Notifications changes={[]} />)
-  .add('Notifications', () => <Notifications changes={stateData.changes} />)
+  .add('Notifications bar and Banner', () => (
+    <div>
+      <Toolbar />
+      <Notifications changes={stateData.changes} />
+    </div>
+  ))
   .add('Banner OPEN', () => <Banner state="REDUX_WEBSOCKET::OPEN" />)
   .add('Banner CLOSED', () => <Banner state="REDUX_WEBSOCKET::CLOSED" />)
   .add('Banner MESSAGE', () => <Banner state="REDUX_WEBSOCKET::MESSAGE" />)

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Change } from '../store/cards/types'
-import './notifications.scss'
+import './components.scss'
 
 type Props = {
   change: Change
