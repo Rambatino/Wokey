@@ -27,11 +27,10 @@ export default class Board extends Component<Props> {
           <div className="boardRow">
             <div
               className="statusTitle"
-              style={{ backgroundColor: i % 2 ? '#F8F8F8' : '#FFF' }}
+              style={{ backgroundColor: i % 2 ? '#E2EDFA' : '#E5F1FE' }}
             >
               <p> {state} </p>
             </div>
-            <div className="verticalLine" />
             <div
               className={state}
               key={state}
@@ -58,7 +57,7 @@ export default class Board extends Component<Props> {
             <div
               className="statusTitle"
               style={{
-                backgroundColor: allStates.length % 2 ? '#F8F8F8' : '#FFF',
+                backgroundColor: allStates.length % 2 ? '#E2EDFA' : '#E5F1FE',
               }}
             >
               <p> Other Open Pull Requests </p>

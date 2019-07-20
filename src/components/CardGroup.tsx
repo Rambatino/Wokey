@@ -18,14 +18,6 @@ export default class CardGroup extends Component<Props> {
             <p className="subtitle">{this.props.data.key}</p>
             <p className="title">{this.props.data.title}</p>
           </div>
-          {this.props.data.linkedCards && (
-            <div
-              className="cardSeparator"
-              style={{
-                height: this.props.data.linkedCards.length * 65,
-              }}
-            />
-          )}
           <div className="cards">
             {this.props.data.linkedCards.map((card, i) => (
               <Card

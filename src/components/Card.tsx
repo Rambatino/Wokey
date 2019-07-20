@@ -87,7 +87,7 @@ export default class Card extends Component<Props> {
           {this.formatTitle(this.props.data.title, this.props.data.link)}
         </div>
         <div className="branch">
-          {this.props.data.repo + ':' + this.props.data.branch}
+          {this.props.data.repo + ' | ' + this.props.data.branch}
         </div>
         {this.svg(
           (this.statusSymbol[this.props.data.ciStatus.status] || {}).colour,
