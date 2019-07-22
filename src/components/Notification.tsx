@@ -18,4 +18,12 @@ export default class Notification extends Component<Props> {
       </div>
     )
   }
+
+  time = (createdAt: Date) => {
+    let time = moment(createdAt).fromNow()
+    if (time === 'a few seconds ago') {
+      time = 'just now'
+    }
+    return time
+  }
 }
