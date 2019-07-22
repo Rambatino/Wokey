@@ -1,3 +1,7 @@
+$toolbar-height: 65px;
+$notifications-width: 360px;
+$notifications-created-at-width: 80px;
+
 .CardGroup {
   background-color: #white;
   background-clip: border-box;
@@ -22,9 +26,9 @@
   .content {
     display: flex;
     align-items: center;
+    align-self: stretch;
     flex-direction: row;
     background-color: transparent;
-    align-self: stretch;
     margin-right: 10px;
   }
 
@@ -180,35 +184,65 @@
 }
 
 .notifications {
-  height: 100%;
-  position: absolute;
+  overflow: auto;
   z-index: 1;
-  overflow-x: hidden;
-  background-color: #f1f1f1;
   text-align: center;
-
-  button {
-    position: absolute;
-    left: 16px;
-    top: 16px;
-  }
+  background-color: rgb(224, 240, 255);
+  top: $toolbar-height;
+  right: 0;
+  position: fixed;
+  height: calc(100% - 65px);
 
   .notification {
     text-align: left;
     border-bottom: 0.5px solid #fefefe;
-    padding-top: 10px;
     min-height: 70px;
-    height: 70px;
     max-height: 70px;
-    font-size: 0.9rem;
-    margin-left: 50px;
+    color: rgb(88, 87, 97);
+    padding-right: 0px;
     vertical-align: middle;
+    background-color: rgb(240, 247, 254);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: $notifications-width;
+
+    p.message {
+      font-size: 0.9rem;
+      width: 260px;
+      margin: 0;
+      height: 70px;
+      vertical-align: middle;
+      position: relative;
+      padding-top: 15px;
+    }
+
+    p.createdAt {
+      font-size: 0.6rem;
+      color: rgb(195, 195, 195);
+      padding: 0;
+      margin: 0;
+      min-width: $notifications-created-at-width;
+      max-width: $notifications-created-at-width;
+      height: 70px;
+      flex-grow: none;
+      text-align: center;
+      margin-top: 51px;
+    }
+  }
+
+  .notificationsTitle {
+    font-size: 19px;
+    color: rgb(88, 87, 97);
+    line-height: 40px;
+    padding: none;
+    margin: none;
   }
 }
 
 .toolbar {
   width: 100%;
-  height: 65px;
+  height: $toolbar-height;
   background-color: rgb(97, 143, 186);
   text-align: center;
   line-height: 65px;
@@ -216,4 +250,6 @@
   font-size: 30px;
   font-weight: 200;
   color: rgb(160, 188, 214);
+  position: fixed;
+  z-index: 10;
 }

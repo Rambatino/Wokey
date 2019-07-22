@@ -24,7 +24,7 @@ export default class Board extends Component<Props> {
     return (
       <div className="Board">
         {allStates.map((state, i) => (
-          <div className="boardRow">
+          <div className="boardRow" key={i}>
             <div
               className="statusTitle"
               style={{ backgroundColor: i % 2 ? '#E2EDFA' : '#E5F1FE' }}

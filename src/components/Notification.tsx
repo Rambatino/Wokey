@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Change } from '../store/cards/types'
 import './components.scss'
+import moment from 'moment'
 
 type Props = {
   change: Change
@@ -8,6 +9,13 @@ type Props = {
 
 export default class Notification extends Component<Props> {
   render() {
-    return <div className="notification"> {this.props.change.message}</div>
+    return (
+      <div className="notification">
+        <p className="createdAt">
+          {moment(this.props.change.createdAt).fromNow()}
+        </p>
+        <p className="message">{this.props.change.message}</p>
+      </div>
+    )
   }
 }

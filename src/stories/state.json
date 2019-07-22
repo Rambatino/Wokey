@@ -164,43 +164,34 @@
     {
       "type": "NEW_ISSUE_ASSIGNED",
       "read": false,
-      "message": "'Brand lift chart has X-axis line in the wrong place' [ADPULSE-251] has been assigned to you",
+      "message": "ADPULSE-224 has been assigned to you",
       "pullRequestID": "",
       "issueID": "",
-      "createdAt": "2019-07-07T15:37:03.560687+08:00",
+      "createdAt": "2019-06-07T15:37:03.560687+08:00",
       "seenAt": "0001-01-01T00:00:00Z"
     },
     {
       "type": "NEW_ISSUE_ASSIGNED",
       "read": false,
-      "message": "'Enabling macro'ed Ad Pulse data on reporting' [ADPULSE-223] has been assigned to you",
+      "message": "ADPULSE-224 has been assigned to you",
       "pullRequestID": "",
       "issueID": "",
-      "createdAt": "2019-07-07T15:37:03.560689+08:00",
+      "createdAt": "2019-07-04T15:37:03.560689+08:00",
       "seenAt": "0001-01-01T00:00:00Z"
     },
     {
       "type": "NEW_PULL_REQUEST_OPENED",
       "read": false,
-      "message": "#2 'State change' [Rambatino/Wokey] has been opened",
+      "message": "ADPULSE-224 has been assigned to you",
       "pullRequestID": "",
       "issueID": "",
-      "createdAt": "2019-07-07T15:37:03.56069+08:00",
+      "createdAt": "2019-07-02T15:37:03.56069+08:00",
       "seenAt": "0001-01-01T00:00:00Z"
     },
     {
       "type": "NEW_PULL_REQUEST_OPENED",
       "read": false,
-      "message": "#9990 'Rearchitectured Zappi Score to accept group by parameter' [Intellection/zappi.client] has been opened",
-      "pullRequestID": "",
-      "issueID": "",
-      "createdAt": "2019-07-07T15:37:03.560695+08:00",
-      "seenAt": "0001-01-01T00:00:00Z"
-    },
-    {
-      "type": "NEW_PULL_REQUEST_OPENED",
-      "read": false,
-      "message": "#4119 'Updated the zappi score' [Intellection/insight-out.engine] has been opened",
+      "message": "ADPULSE-224 has been assigned to you",
       "pullRequestID": "",
       "issueID": "",
       "createdAt": "2019-07-07T15:37:03.560695+08:00",
@@ -209,7 +200,16 @@
     {
       "type": "NEW_PULL_REQUEST_OPENED",
       "read": false,
-      "message": "#9901 '[ADPULSE-224] Add exports to brand impact page' [Intellection/zappi.client] has been opened",
+      "message": "ADPULSE-224 has been assigned to you",
+      "pullRequestID": "",
+      "issueID": "",
+      "createdAt": "2019-07-07T15:37:03.560695+08:00",
+      "seenAt": "0001-01-01T00:00:00Z"
+    },
+    {
+      "type": "NEW_PULL_REQUEST_OPENED",
+      "read": false,
+      "message": "ADPULSE-224 has been assigned to you",
       "pullRequestID": "",
       "issueID": "",
       "createdAt": "2019-07-07T15:37:03.560696+08:00",
@@ -218,7 +218,7 @@
     {
       "type": "NEW_PULL_REQUEST_OPENED",
       "read": false,
-      "message": "#4130 '[ADPULSE-223] Revert \"Revert \"Updated the zappi score\"\"' [Intellection/insight-out.engine] has been opened",
+      "message": "ADPULSE-224 has been assigned to you",
       "pullRequestID": "",
       "issueID": "",
       "createdAt": "2019-07-07T15:37:03.560697+08:00",
@@ -227,7 +227,7 @@
     {
       "type": "NEW_PULL_REQUEST_OPENED",
       "read": false,
-      "message": "#2420 '[feature/ADPULSE-223] - Adding macro data to survey response' [Intellection/data-collector.app] has been opened",
+      "message": "ADPULSE-224 has been assigned to you",
       "pullRequestID": "",
       "issueID": "",
       "createdAt": "2019-07-07T15:37:03.560699+08:00",
@@ -236,7 +236,7 @@
     {
       "type": "NEW_PULL_REQUEST_COMMENT",
       "read": false,
-      "message": "#2420 '[feature/ADPULSE-223] - Adding macro data to survey response' [Intellection/data-collector.app] has 1 new comment(s)",
+      "message": "ADPULSE-224 has been assigned to you",
       "pullRequestID": "",
       "issueID": "",
       "createdAt": "2019-07-07T15:48:05.344436+08:00",

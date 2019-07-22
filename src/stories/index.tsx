@@ -14,6 +14,13 @@ import './index.css'
 const stateData = parseJSON(state)
 
 storiesOf('New Workstate', module)
+  .add('all', () => (
+    <div>
+      <Toolbar />
+      <Notifications changes={stateData.changes} />
+      <Board data={stateData} />
+    </div>
+  ))
   .add('Notifications bar and Banner', () => (
     <div>
       <Toolbar />

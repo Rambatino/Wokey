@@ -10,26 +10,13 @@ type Props = {
 type State = { open: boolean }
 
 export default class Notifications extends Component<Props, State> {
-  state: State = { open: false }
-  width = 300
-  margin = 50
-
-  slide = () => {
-    this.setState({ open: !this.state.open })
-  }
-
   render() {
-    const { open } = this.state
+    if (this.props.changes === undefined || !this.props.changes.length) {
+      return null
+    }
     return (
-      <div
-        className="notifications"
-        style={{
-          width: this.width,
-          right: open ? '0px' : this.margin - this.width,
-        }}
-      >
-        <p>Recent Activity</p>
-        <button onClick={this.slide}> {open ? '>' : '<'} </button>
+      <div className="notifications">
+        <p className="notificationsTitle">Recent Activity</p>
         {this.props.changes.map((change, i) => (
           <Notification key={i} change={change} />
         ))}
