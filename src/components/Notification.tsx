@@ -11,15 +11,13 @@ export default class Notification extends Component<Props> {
   render() {
     return (
       <div className="notification">
-        <p className="createdAt">
-          {moment(this.props.change.createdAt).fromNow()}
-        </p>
+        <p className="createdAt">{this.time(this.props.change.createdAt)}</p>
         <p className="message">{this.props.change.message}</p>
       </div>
     )
   }
 
-  time = (createdAt: Date) => {
+  time = (createdAt: string) => {
     let time = moment(createdAt).fromNow()
     if (time === 'a few seconds ago') {
       time = 'just now'
