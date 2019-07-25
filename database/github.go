@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/google/go-github/github"
+	"github.com/k0kubun/pp"
 	"golang.org/x/oauth2"
 )
 
@@ -60,15 +61,22 @@ func (g *githubQuery) getGithubPullRequests(jiraKeys []string) []pullRequest {
 		wg.Add(1)
 		go queryPrs(client, ctx, "type:pr head:feature/"+key+" head:hotfix/"+key, prs, &wg)
 	}
+	go func() {
+		idMap := map[int64]bool{}
+		for {
+			select {
+			case newPrs := <-prs:
+				for _, p := range newPrs {
+					if !idMap[p.GetID()] {
+						uniqPrs = append(uniqPrs, p)
+						idMap[p.GetID()] = true
+					}
+				}
+			}
+		}
+	}()
 
 	wg.Wait()
-	idMap := map[int64]bool{}
-	for _, p := range <-prs {
-		if !idMap[p.GetID()] {
-			uniqPrs = append(uniqPrs, p)
-			idMap[p.GetID()] = true
-		}
-	}
 
 	// only explore open and PRs and PRs assigned to issues in more detail
 	// get the comments
@@ -193,8 +201,8 @@ func queryPrs(client *github.Client, ctx context.Context, queryString string, ch
 	defer wg.Done()
 	prs, _, err := client.Search.Issues(ctx, queryString, &github.SearchOptions{ListOptions: github.ListOptions{PerPage: 100}})
 	if err != nil {
-		log.Println(err.Error())
-		close(ch)
+		pp.Println(err.Error())
+		return
 	}
 	ch <- prs.Issues
 }
