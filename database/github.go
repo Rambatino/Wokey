@@ -48,23 +48,25 @@ func (g *githubQuery) getGithubPullRequests(jiraKeys []string) []pullRequest {
 	// search by branch name matching partial (doesn't have to be just me as author),
 	// search by title match
 	// head:feature/ADPULSE
+	var wg sync.WaitGroup
+
 	prs := make(chan []github.Issue)
 	uniqPrs := []github.Issue{}
-	counter := 1
-	go queryPrs(client, ctx, "author:"+os.Getenv("GITHUB_USER")+" type:pr state:open", prs)
+	wg.Add(1)
+	go queryPrs(client, ctx, "author:"+os.Getenv("GITHUB_USER")+" type:pr state:open", prs, &wg)
 	for _, key := range jiraKeys {
-		go queryPrs(client, ctx, key+" in:title,body,comments,branch type:pr", prs)
-		go queryPrs(client, ctx, "type:pr head:feature/"+key+" head:hotfix/"+key, prs)
-		counter += 2
+		wg.Add(1)
+		go queryPrs(client, ctx, key+" in:title,body,comments,branch type:pr", prs, &wg)
+		wg.Add(1)
+		go queryPrs(client, ctx, "type:pr head:feature/"+key+" head:hotfix/"+key, prs, &wg)
 	}
 
+	wg.Wait()
 	idMap := map[int64]bool{}
-	for i := 0; i < counter; i++ {
-		for _, p := range <-prs {
-			if !idMap[p.GetID()] {
-				uniqPrs = append(uniqPrs, p)
-				idMap[p.GetID()] = true
-			}
+	for _, p := range <-prs {
+		if !idMap[p.GetID()] {
+			uniqPrs = append(uniqPrs, p)
+			idMap[p.GetID()] = true
 		}
 	}
 
@@ -74,7 +76,6 @@ func (g *githubQuery) getGithubPullRequests(jiraKeys []string) []pullRequest {
 
 	store := []pullRequest{}
 
-	var wg sync.WaitGroup
 	for _, issue := range uniqPrs {
 		wg.Add(1)
 		go func(i github.Issue, w *sync.WaitGroup) {
@@ -188,7 +189,8 @@ func getCIStatus(statuses []*github.RepoStatus) ciStatus {
 	return s
 }
 
-func queryPrs(client *github.Client, ctx context.Context, queryString string, ch chan<- []github.Issue) {
+func queryPrs(client *github.Client, ctx context.Context, queryString string, ch chan<- []github.Issue, wg *sync.WaitGroup) {
+	defer wg.Done()
 	prs, _, err := client.Search.Issues(ctx, queryString, &github.SearchOptions{ListOptions: github.ListOptions{PerPage: 100}})
 	if err != nil {
 		log.Println(err.Error())
