@@ -18,10 +18,18 @@ type GithubQuerier interface {
 }
 
 type githubQuery struct {
+	client *github.Client
+	ctx    context.Context
 }
 
 func NewGithubQuerier() GithubQuerier {
-	return &githubQuery{}
+	ctx := context.Background()
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
+	)
+	tc := oauth2.NewClient(ctx, ts)
+
+	return &githubQuery{github.NewClient(tc), ctx}
 }
 
 var (
@@ -37,116 +45,59 @@ var (
 )
 
 func (g *githubQuery) getGithubPullRequests(jiraKeys []string) []pullRequest {
-	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
-	)
-	tc := oauth2.NewClient(ctx, ts)
-
-	client := github.NewClient(tc)
-
 	// search open,
 	// search by branch name matching partial (doesn't have to be just me as author),
 	// search by title match
 	// head:feature/ADPULSE
 	var wg sync.WaitGroup
-
 	prs := make(chan []github.Issue)
-	uniqPrs := []github.Issue{}
-	wg.Add(1)
-	go queryPrs(client, ctx, "author:"+os.Getenv("GITHUB_USER")+" type:pr state:open", prs, &wg)
+	chanErr := make(chan error)
+	pullRequestChan := make(chan pullRequest)
+
+	wg.Add(1 + len(jiraKeys)*2)
+	go g.queryPrs("author:"+os.Getenv("GITHUB_USER")+" type:pr state:open", prs, chanErr)
 	for _, key := range jiraKeys {
-		wg.Add(1)
-		go queryPrs(client, ctx, key+" in:title,body,comments,branch type:pr", prs, &wg)
-		wg.Add(1)
-		go queryPrs(client, ctx, "type:pr head:feature/"+key+" head:hotfix/"+key, prs, &wg)
+		go g.queryPrs(key+" in:title,body,comments,branch type:pr", prs, chanErr)
+		go g.queryPrs("type:pr head:feature/"+key+" head:hotfix/"+key, prs, chanErr)
 	}
-	go func() {
+
+	go func(wg *sync.WaitGroup) {
 		idMap := map[int64]bool{}
 		for {
 			select {
 			case newPrs := <-prs:
 				for _, p := range newPrs {
 					if !idMap[p.GetID()] {
-						uniqPrs = append(uniqPrs, p)
 						idMap[p.GetID()] = true
+						wg.Add(1)
+						go g.fillExtraInformation(p, pullRequestChan)
 					}
 				}
+				wg.Done()
+			case err := <-chanErr:
+				pp.Println("An error occured fetching PRs: " + err.Error())
+				wg.Done()
 			}
 		}
-	}()
+	}(&wg)
+
+	store := []pullRequest{}
+
+	go func(wg *sync.WaitGroup) {
+		for {
+			select {
+			case filledPr := <-pullRequestChan:
+				store = append(store, filledPr)
+				wg.Done()
+			}
+		}
+	}(&wg)
 
 	wg.Wait()
-
 	// only explore open and PRs and PRs assigned to issues in more detail
 	// get the comments
 	// get the statuses
 
-	store := []pullRequest{}
-
-	for _, issue := range uniqPrs {
-		wg.Add(1)
-		go func(i github.Issue, w *sync.WaitGroup) {
-			defer w.Done()
-			repo := strings.Replace(i.GetRepositoryURL(), "https://api.github.com/repos/", "", -1)
-			split := strings.Split(repo, "/")
-
-			reviewsChan := make(chan []*github.PullRequestReview)
-			prChan := make(chan *github.PullRequest)
-
-			go func() {
-				rvs, _, _ := client.PullRequests.ListReviews(ctx, split[0], split[1], i.GetNumber(), nil)
-				reviewsChan <- rvs
-			}()
-			go func() {
-				pr, _, _ := client.PullRequests.Get(ctx, split[0], split[1], i.GetNumber())
-				prChan <- pr
-			}()
-			pr := <-prChan
-
-			state := ""
-
-			if pr.GetMergeableState() == "dirty" || pr.GetMergeableState() == "behind" {
-				state = formatStatus(CONFLICTED_STATE, state)
-			}
-
-			statuses, _, err := client.Repositories.ListStatuses(ctx, split[0], split[1], pr.GetHead().GetSHA(), nil)
-
-			if err != nil {
-				log.Println(err.Error())
-				return
-			}
-
-			lastCommentURL := ""
-			commentCount := 0
-			for _, rev := range <-reviewsChan {
-				if rev.GetHTMLURL() != "" {
-					lastCommentURL = rev.GetHTMLURL()
-				}
-				commentCount++
-				state = formatStatus(rev.GetState(), state)
-			}
-
-			if pr.GetMerged() {
-				state = IS_MERGED
-			}
-
-			store = append(store, pullRequest{
-				ID:            strconv.Itoa(int(i.GetID())),
-				Title:         i.GetTitle(),
-				ApprovalState: state,
-				Link:          pr.GetHTMLURL(),
-				Branch:        pr.GetHead().GetRef(),
-				CIStatus:      getCIStatus(statuses),
-				Repo:          repo,
-				Number:        i.GetNumber(),
-				state:         pr.GetState(),
-				author:        pr.GetUser().GetLogin(),
-				Comments:      comment{LastCommentLink: lastCommentURL, Count: commentCount},
-			})
-		}(issue, &wg)
-	}
-	wg.Wait()
 	return store
 }
 
@@ -197,12 +148,70 @@ func getCIStatus(statuses []*github.RepoStatus) ciStatus {
 	return s
 }
 
-func queryPrs(client *github.Client, ctx context.Context, queryString string, ch chan<- []github.Issue, wg *sync.WaitGroup) {
-	defer wg.Done()
-	prs, _, err := client.Search.Issues(ctx, queryString, &github.SearchOptions{ListOptions: github.ListOptions{PerPage: 100}})
+func (g *githubQuery) queryPrs(queryString string, ch chan<- []github.Issue, chanErr chan<- error) {
+	prs, _, err := g.client.Search.Issues(g.ctx, queryString, &github.SearchOptions{ListOptions: github.ListOptions{PerPage: 100}})
 	if err != nil {
-		pp.Println(err.Error())
+		chanErr <- err
 		return
 	}
 	ch <- prs.Issues
+}
+
+func (g *githubQuery) fillExtraInformation(issue github.Issue, res chan<- pullRequest) {
+	repo := strings.Replace(issue.GetRepositoryURL(), "https://api.github.com/repos/", "", -1)
+	split := strings.Split(repo, "/")
+
+	reviewsChan := make(chan []*github.PullRequestReview)
+	prChan := make(chan *github.PullRequest)
+
+	go func() {
+		rvs, _, _ := g.client.PullRequests.ListReviews(g.ctx, split[0], split[1], issue.GetNumber(), nil)
+		reviewsChan <- rvs
+	}()
+	go func() {
+		pr, _, _ := g.client.PullRequests.Get(g.ctx, split[0], split[1], issue.GetNumber())
+		prChan <- pr
+	}()
+	pr := <-prChan
+
+	state := ""
+
+	if pr.GetMergeableState() == "dirty" || pr.GetMergeableState() == "behind" {
+		state = formatStatus(CONFLICTED_STATE, state)
+	}
+
+	statuses, _, err := g.client.Repositories.ListStatuses(g.ctx, split[0], split[1], pr.GetHead().GetSHA(), nil)
+
+	if err != nil {
+		log.Println(err.Error())
+		return
+	}
+
+	lastCommentURL := ""
+	commentCount := 0
+	for _, rev := range <-reviewsChan {
+		if rev.GetHTMLURL() != "" {
+			lastCommentURL = rev.GetHTMLURL()
+		}
+		commentCount++
+		state = formatStatus(rev.GetState(), state)
+	}
+
+	if pr.GetMerged() {
+		state = IS_MERGED
+	}
+
+	res <- pullRequest{
+		ID:            strconv.Itoa(int(issue.GetID())),
+		Title:         issue.GetTitle(),
+		ApprovalState: state,
+		Link:          pr.GetHTMLURL(),
+		Branch:        pr.GetHead().GetRef(),
+		CIStatus:      getCIStatus(statuses),
+		Repo:          repo,
+		Number:        issue.GetNumber(),
+		state:         pr.GetState(),
+		author:        pr.GetUser().GetLogin(),
+		Comments:      comment{LastCommentLink: lastCommentURL, Count: commentCount},
+	}
 }

@@ -43,8 +43,8 @@ func (o *Manager) FindOrNew(bucketID string) state {
 		return state{githubQuery: &githubQuery{}, jiraQuery: &jiraQuery{}}
 	}
 
-	s.githubQuery = &githubQuery{}
-	s.jiraQuery = &jiraQuery{}
+	s.githubQuery = NewGithubQuerier()
+	s.jiraQuery = NewJiraQuery()
 	return s
 }
 
