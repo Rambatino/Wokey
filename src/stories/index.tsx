@@ -31,6 +31,7 @@ storiesOf('New Workstate', module)
   .add('Banner CLOSED', () => <Banner state="REDUX_WEBSOCKET::CLOSED" />)
   .add('Banner MESSAGE', () => <Banner state="REDUX_WEBSOCKET::MESSAGE" />)
   .add('Banner CONNECT', () => <Banner state="REDUX_WEBSOCKET::CONNECT" />)
+  .add('Notifications Empty', () => <Notifications changes={[]} />)
   .add('Card', () => (
     <Card data={stateData.baseCards[0].linkedCards[0]} onClick={() => {}} />
   ))

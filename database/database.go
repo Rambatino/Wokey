@@ -152,21 +152,21 @@ func CheckForStateChange(state state) (newState state, changeCount int) {
 
 				// check if state has changed
 				if newIssue.State != initialIssue.State {
-					newStateChangeStore = append(newStateChangeStore, stateChange{
-						CreatedAt: time.Now(),
-						Type:      COLUMN_CHANGE,
-						Message:   columnChangeText(newIssue, initialIssue.State, newIssue.State),
-					})
+					// newStateChangeStore = append(newStateChangeStore, stateChange{
+					// 	CreatedAt: time.Now(),
+					// 	Type:      COLUMN_CHANGE,
+					// 	Message:   columnChangeText(newIssue, initialIssue.State, newIssue.State),
+					// })
 				}
 
 			}
 		}
 		if !found {
-			newStateChangeStore = append(newStateChangeStore, stateChange{
-				CreatedAt: time.Now(),
-				Type:      NEW_ISSUE_ASSIGNED,
-				Message:   newIssueAssignedText(newIssue),
-			})
+			// newStateChangeStore = append(newStateChangeStore, stateChange{
+			// 	CreatedAt: time.Now(),
+			// 	Type:      NEW_ISSUE_ASSIGNED,
+			// 	Message:   newIssueAssignedText(newIssue),
+			// })
 		}
 	}
 
@@ -187,11 +187,11 @@ func CheckForStateChange(state state) (newState state, changeCount int) {
 			}
 		}
 		if !found {
-			newStateChangeStore = append(newStateChangeStore, stateChange{
-				CreatedAt: time.Now(),
-				Type:      NEW_PULL_REQUEST_OPENED,
-				Message:   newPullRequestOpenedText(newPullRequest),
-			})
+			// newStateChangeStore = append(newStateChangeStore, stateChange{
+			// 	CreatedAt: time.Now(),
+			// 	Type:      NEW_PULL_REQUEST_OPENED,
+			// 	Message:   newPullRequestOpenedText(newPullRequest),
+			// })
 		}
 	}
 
@@ -250,35 +250,35 @@ func checkPullRequests(initialPullRequest, newPullRequest pullRequest) []stateCh
 	// check if state has changed
 	if newPullRequest.ApprovalState != initialPullRequest.ApprovalState {
 		if newPullRequest.ApprovalState == APPROVED_STATE {
-			newStateChangeStore = append(newStateChangeStore, stateChange{
-				CreatedAt: time.Now(),
-				Type:      APPROVAL_CHANGE,
-				Message:   approvalChangeText(newPullRequest),
-			})
+			// newStateChangeStore = append(newStateChangeStore, stateChange{
+			// 	CreatedAt: time.Now(),
+			// 	Type:      APPROVAL_CHANGE,
+			// 	Message:   approvalChangeText(newPullRequest),
+			// })
 		}
 		if newPullRequest.ApprovalState == CHANGES_REQUESTED_STATE {
-			newStateChangeStore = append(newStateChangeStore, stateChange{
-				CreatedAt: time.Now(),
-				Type:      CHANGES_REQUESTED,
-				Message:   changesRequestedText(newPullRequest),
-			})
+			// newStateChangeStore = append(newStateChangeStore, stateChange{
+			// 	CreatedAt: time.Now(),
+			// 	Type:      CHANGES_REQUESTED,
+			// 	Message:   changesRequestedText(newPullRequest),
+			// })
 		}
 	}
 
 	if newPullRequest.CIStatus.Status != initialPullRequest.CIStatus.Status {
 		if newPullRequest.CIStatus.Status == CI_FAILED_STATE {
-			newStateChangeStore = append(newStateChangeStore, stateChange{
-				CreatedAt: time.Now(),
-				Type:      CI_FAILED,
-				Message:   ciFailedText(newPullRequest),
-			})
+			// newStateChangeStore = append(newStateChangeStore, stateChange{
+			// 	CreatedAt: time.Now(),
+			// 	Type:      CI_FAILED,
+			// 	Message:   ciFailedText(newPullRequest),
+			// })
 		}
 		if newPullRequest.CIStatus.Status == CI_SUCCEEDED_STATE {
-			newStateChangeStore = append(newStateChangeStore, stateChange{
-				CreatedAt: time.Now(),
-				Type:      CI_SUCCEEDED,
-				Message:   ciSucceededText(newPullRequest),
-			})
+			// newStateChangeStore = append(newStateChangeStore, stateChange{
+			// 	CreatedAt: time.Now(),
+			// 	Type:      CI_SUCCEEDED,
+			// 	Message:   ciSucceededText(newPullRequest),
+			// })
 		}
 	}
 	return newStateChangeStore

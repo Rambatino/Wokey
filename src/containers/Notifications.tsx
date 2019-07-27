@@ -11,13 +11,10 @@ type State = { open: boolean }
 
 export default class Notifications extends Component<Props, State> {
   render() {
-    if (this.props.changes === undefined || !this.props.changes.length) {
-      return null
-    }
     return (
       <div className="notifications">
         <p id="notificationsTitle">Recent Activity</p>
-        <p id="clearAll">Clear All</p>
+        {this.props.changes.length > 0 && <p id="clearAll">Clear All</p>}
         {this.props.changes.map((change, i) => (
           <Notification key={i} change={change} />
         ))}

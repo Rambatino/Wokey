@@ -32,7 +32,7 @@ func (o *Manager) FindOrNew(bucketID string) state {
 	})
 
 	if err != nil {
-		return state{githubQuery: &githubQuery{}, jiraQuery: &jiraQuery{}}
+		return state{githubQuery: NewGithubQuerier(), jiraQuery: NewJiraQuery()}
 	}
 	dec := gob.NewDecoder(bytes.NewBuffer(valCopy))
 	var s state
@@ -40,7 +40,7 @@ func (o *Manager) FindOrNew(bucketID string) state {
 
 	if err != nil {
 		pp.Println("Decode error", err)
-		return state{githubQuery: &githubQuery{}, jiraQuery: &jiraQuery{}}
+		return state{githubQuery: NewGithubQuerier(), jiraQuery: NewJiraQuery()}
 	}
 
 	s.githubQuery = NewGithubQuerier()
