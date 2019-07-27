@@ -235,6 +235,15 @@ $notifications-created-at-width: 80px;
     margin-left: 10px;
   }
 
+  #line {
+    width: 95%;
+    height: 1px;
+    right: 0px;
+    position: absolute;
+    transform: translateY(79px);
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
   #flag {
     position: absolute;
     margin-top: -37px;

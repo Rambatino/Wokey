@@ -5,7 +5,7 @@ import { Cards, CardThunkDispatch, Change } from './store/cards/types'
 import { AppState } from './store'
 import { connect } from 'react-redux'
 import { connect as websocketConnect } from '@giantmachines/redux-websocket'
-import Notifications from './components/Notifications'
+import Notifications from './containers/Notifications'
 import Toolbar from './components/Toolbar'
 
 // https://github.com/reduxjs/redux-thunk/issues/213

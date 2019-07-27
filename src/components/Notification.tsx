@@ -55,6 +55,7 @@ export default class Notification extends Component<Props> {
             {this.flag(this.state.flagged ? '#618FBA' : 'none')}
           </div>
         </div>
+        <div id="line" />
       </div>
     )
   }
