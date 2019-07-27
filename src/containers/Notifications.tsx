@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import './components.scss'
+import './containers.scss'
 import { Change } from '../store/cards/types'
-import Notification from './Notification'
+import Notification from '../components/Notification'
 
 type Props = {
   changes: Array<Change>
@@ -16,7 +16,8 @@ export default class Notifications extends Component<Props, State> {
     }
     return (
       <div className="notifications">
-        <p className="notificationsTitle">Recent Activity</p>
+        <p id="notificationsTitle">Recent Activity</p>
+        <p id="clearAll">Clear All</p>
         {this.props.changes.map((change, i) => (
           <Notification key={i} change={change} />
         ))}

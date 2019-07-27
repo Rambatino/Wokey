@@ -7,7 +7,7 @@ import CardGroup from '../components/CardGroup'
 import Card from '../components/Card'
 import { parseJSON } from '../store/cards/reducer'
 import Banner from '../components/Banner'
-import Notifications from '../components/Notifications'
+import Notifications from '../containers/Notifications'
 import Toolbar from '../components/Toolbar'
 import './index.css'
 

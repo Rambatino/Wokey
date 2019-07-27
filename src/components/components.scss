@@ -1,5 +1,5 @@
 $toolbar-height: 65px;
-$notifications-width: 360px;
+$notifications-width: 270px;
 $notifications-created-at-width: 80px;
 
 .CardGroup {
@@ -183,63 +183,6 @@ $notifications-created-at-width: 80px;
   }
 }
 
-.notifications {
-  overflow: auto;
-  z-index: 1;
-  text-align: center;
-  background-color: rgb(224, 240, 255);
-  top: $toolbar-height;
-  right: 0;
-  position: fixed;
-  height: calc(100% - 65px);
-
-  .notification {
-    text-align: left;
-    border-bottom: 0.5px solid #fefefe;
-    min-height: 70px;
-    max-height: 70px;
-    color: rgb(88, 87, 97);
-    padding-right: 0px;
-    vertical-align: middle;
-    background-color: rgb(240, 247, 254);
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    width: $notifications-width;
-
-    p.message {
-      font-size: 0.9rem;
-      width: 260px;
-      margin: 0;
-      height: 70px;
-      vertical-align: middle;
-      position: relative;
-      padding-top: 15px;
-    }
-
-    p.createdAt {
-      font-size: 0.6rem;
-      color: rgb(195, 195, 195);
-      padding: 0;
-      margin: 0;
-      min-width: $notifications-created-at-width;
-      max-width: $notifications-created-at-width;
-      height: 70px;
-      flex-grow: none;
-      text-align: center;
-      margin-top: 51px;
-    }
-  }
-
-  .notificationsTitle {
-    font-size: 19px;
-    color: rgb(88, 87, 97);
-    line-height: 40px;
-    padding: none;
-    margin: none;
-  }
-}
-
 .toolbar {
   width: 100%;
   height: $toolbar-height;
@@ -252,4 +195,57 @@ $notifications-created-at-width: 80px;
   color: rgb(160, 188, 214);
   position: fixed;
   z-index: 10;
+}
+
+.notification {
+  text-align: left;
+  border-bottom: 0.5px solid #fefefe;
+  min-height: 80px;
+  max-height: 80px;
+  color: rgb(88, 87, 97);
+  padding-right: 0px;
+  vertical-align: middle;
+  background-color: rgb(240, 247, 254);
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: $notifications-width;
+
+  p.message {
+    font-size: 0.9rem;
+    width: 260px;
+    margin: 0;
+    margin-left: 10px;
+    height: 70px;
+    vertical-align: middle;
+    position: relative;
+    padding-top: 15px;
+  }
+
+  p.createdAt {
+    position: absolute;
+    font-size: 0.6rem;
+    color: rgb(195, 195, 195);
+    padding: 0;
+    min-width: $notifications-created-at-width;
+    max-width: $notifications-created-at-width;
+    flex-grow: none;
+    text-align: left;
+    margin-top: 64px;
+    margin-left: 10px;
+  }
+
+  #flag {
+    position: absolute;
+    margin-top: -37px;
+    margin-left: 240px;
+    cursor: pointer;
+  }
+
+  #tick {
+    position: absolute;
+    margin-top: -37px;
+    margin-left: 225px;
+    cursor: pointer;
+  }
 }
