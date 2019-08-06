@@ -1,27 +1,31 @@
 import React, { Component } from 'react'
 import './App.css'
 import Board from './containers/Board'
-import { Cards, CardThunkDispatch } from './store/cards/types'
-import { fetchPulls, fetchIssues } from './store/cards/actions'
+import { Cards, CardThunkDispatch, Change } from './store/cards/types'
 import { AppState } from './store'
 import { connect } from 'react-redux'
+import { connect as websocketConnect } from '@giantmachines/redux-websocket'
+import Notifications from './containers/Notifications'
+import Toolbar from './components/Toolbar'
 
 // https://github.com/reduxjs/redux-thunk/issues/213
 interface AppProps {
-  fetchPulls: () => void
-  fetchIssues: () => void
   cards: Cards
+  notifications: Array<Change>
+  connect: () => void
+  connectedState: string
 }
 
 class App extends Component<AppProps> {
   componentDidMount() {
-    this.props.fetchPulls()
-    this.props.fetchIssues()
+    this.props.connect()
   }
 
   render() {
     return (
       <div className="App">
+        <Toolbar />
+        <Notifications changes={this.props.notifications} />
         <Board data={this.props.cards} />
       </div>
     )
@@ -30,11 +34,13 @@ class App extends Component<AppProps> {
 
 const mapStateToProps = (state: AppState) => ({
   cards: state.cards,
+  notifications: state.cards.changes,
+  connectedState: state.connectedState,
 })
 
 const mapDispatchToProps = (dispatch: CardThunkDispatch) => ({
-  fetchPulls: () => dispatch(fetchPulls()),
-  fetchIssues: () => dispatch(fetchIssues()),
+  connect: () =>
+    dispatch(websocketConnect('ws://' + document.location.host + '/ws')),
 })
 
 export default connect(

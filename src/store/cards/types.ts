@@ -1,47 +1,63 @@
 import { ThunkDispatch } from 'redux-thunk'
 import { AnyAction } from 'redux'
 
-export interface Item {
-  id: string
-  desc?: string
-  descHtml?: string
-  descMarkdown?: string
-  title: string
-  subtitle: string
-  url: string
-  state: string
-  branch?: string
-  repo?: string
-  status?: string
+export interface Comment {
+  count: number
+  lastCommentLink: string
+}
+
+export interface Status {
+  status: string
+  link: string
 }
 
 export interface LinkedCard {
-  item: Item
+  id: string
+  number: number
+  approvalState: string
+  ciStatus: Status
+  title: string
+  link: string
+  branch: string
+  repo: string
+
+  comments: Comment
 }
 
 export interface BaseCard {
-  item: Item
+  id: string
+  key: string
+  title: string
+  link: string
+  state: string
+
+  comments: Comment
   linkedCards: Array<LinkedCard>
+}
+
+export interface Change {
+  type: string
+  read: boolean
+  message: string
+  pullRequestID: string
+  issueID: string
+  createdAt: string
+  seenAt: string
 }
 
 export interface Cards {
   linkedCards: Array<LinkedCard>
   baseCards: Array<BaseCard>
+  changes: Array<Change>
 }
 
-export const SET_ISSUES = 'SET_ISSUES'
-export const SET_PULLS = 'SET_PULLS'
+export const SET_STATE = 'REDUX_WEBSOCKET::MESSAGE'
 
-interface SetIssuesAction {
-  type: typeof SET_ISSUES
-  payload: Array<Item>
+interface SetStateAction {
+  type: typeof SET_STATE
+  payload: { event: MessageEvent; message: string; origin: string }
 }
 
-interface SetPullsAction {
-  type: typeof SET_PULLS
-  payload: Array<Item>
-}
-
-export type SetActionTypes = SetIssuesAction | SetPullsAction
+export type SetActionTypes = SetStateAction
 
 export type CardThunkDispatch = ThunkDispatch<Cards, void, AnyAction>

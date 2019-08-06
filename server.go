@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"wokey/routes/api"
 	"wokey/routes/callback"
 	"wokey/routes/home"
 	"wokey/routes/login"
@@ -13,6 +12,7 @@ import (
 	"wokey/routes/user"
 
 	"github.com/codegangsta/negroni"
+	"github.com/dgraph-io/badger"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
@@ -36,10 +36,32 @@ func StartServer() {
 	}))
 	http.Handle("/", handlers.CombinedLoggingHandler(os.Stdout, r))
 
-	// data things
-	r.HandleFunc("/issues", api.AllIssuesHandler)
-	r.HandleFunc("/pulls", api.AllCurrentPullRequests)
+	opts := badger.DefaultOptions("/tmp/wokey")
+	db, err := badger.Open(opts)
 
-	log.Print("Server listening on http://localhost:1234/")
-	http.ListenAndServe("0.0.0.0:1234", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	hub := newHub(db)
+	go hub.run()
+	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		serveWs(hub, w, r)
+	})
+
+	// data things
+	// r.HandleFunc("/issues", api.AllIssuesHandler)
+	// r.HandleFunc("/pulls", api.AllCurrentPullRequests)
+
+	// set up database manager
+	// manager := database.NewManager()
+	// manager.AddObserver("hi")
+	// database.CheckForState("")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "1234"
+	}
+	log.Print("Server listening on http://0.0.0.0:" + port + "/")
+	http.ListenAndServe("0.0.0.0:"+port, nil)
 }
