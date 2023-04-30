@@ -16,7 +16,7 @@
     "react-markdown": "^4.0.8",
     "react-rebound": "^0.8.3",
     "react-redux": "^7.0.2",
-    "react-scripts": "2.1.8",
+    "react-scripts": "5.0.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "ts-debounce": "^1.0.0"
@@ -43,7 +43,7 @@
     "@storybook/addon-actions": "^5.0.9",
     "@storybook/addon-links": "^5.0.9",
     "@storybook/addons": "^5.0.9",
-    "@storybook/react": "^5.0.9",
+    "@storybook/react": "^7.0.7",
     "@types/react-redux": "^7.0.8",
     "babel-loader": "^8.0.5",
     "node-sass": "^4.11.0",
